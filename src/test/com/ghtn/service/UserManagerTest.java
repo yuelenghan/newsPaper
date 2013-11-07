@@ -2,6 +2,7 @@ package com.ghtn.service;
 
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.User;
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +18,14 @@ import javax.annotation.Resource;
 @Component
 public class UserManagerTest extends BaseTestCase {
 
-    @Resource
+    private static Logger logger = Logger.getLogger(UserManagerTest.class);
+
     private UserManager userManager;
+
+    @Resource
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
 
     @Test
     public void testSave() {
@@ -37,10 +44,18 @@ public class UserManagerTest extends BaseTestCase {
     @Test
     public void testUpdate() {
         User user = new User();
-        user.setId(1L);
-        user.setName("死神");
+        user.setId(3L);
+        user.setName("火影");
         user.setAge(30);
 
         userManager.save(user);
+    }
+
+    @Test
+    public void testGetOld() throws Exception {
+        User user = userManager.getOld(3L, 4);
+        if (user != null) {
+            logger.debug("用户名 = " + user.getName());
+        }
     }
 }
