@@ -16,7 +16,6 @@ import java.util.List;
  * Time: 上午11:32
  * To change this template use File | Settings | File Templates.
  */
-@Component
 public class UserDaoTest extends BaseTestCase {
 
     private static Logger logger = Logger.getLogger(UserDaoTest.class);

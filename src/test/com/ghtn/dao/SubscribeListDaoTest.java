@@ -13,7 +13,6 @@ import java.util.Date;
  * Date: 13-11-6
  * Time: 下午5:47
  */
-@Component
 public class SubscribeListDaoTest extends BaseTestCase {
 
     private SubscribeListDao subscribeListDao;

@@ -12,7 +12,6 @@ import javax.annotation.Resource;
  * Date: 13-11-6
  * Time: 下午5:21
  */
-@Component
 public class FavoriteDaoTest extends BaseTestCase{
 
     private FavoriteDao favoriteDao;

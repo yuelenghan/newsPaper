@@ -12,7 +12,6 @@ import javax.annotation.Resource;
  * Date: 13-11-6
  * Time: 下午5:26
  */
-@Component
 public class FrameDaoTest extends BaseTestCase {
 
     private FrameDao frameDao;

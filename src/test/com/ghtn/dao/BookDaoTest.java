@@ -14,7 +14,6 @@ import javax.annotation.Resource;
  * Time: 下午3:50
  * To change this template use File | Settings | File Templates.
  */
-@Component
 public class BookDaoTest extends BaseTestCase {
 
     private BookDao bookDao;

@@ -12,7 +12,6 @@ import javax.annotation.Resource;
  * Date: 13-11-6
  * Time: 下午5:54
  */
-@Component
 public class TemplateDaoTest extends BaseTestCase {
 
     private TemplateDao templateDao;

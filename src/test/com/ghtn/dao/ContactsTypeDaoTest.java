@@ -17,7 +17,6 @@ import java.util.Set;
  * Time: 下午2:49
  * To change this template use File | Settings | File Templates.
  */
-@Component
 public class ContactsTypeDaoTest extends BaseTestCase {
 
     private ContactsTypeDao contactsTypeDao;

@@ -15,7 +15,6 @@ import javax.annotation.Resource;
  * Time: 下午3:40
  * To change this template use File | Settings | File Templates.
  */
-@Component
 public class UserManagerTest extends BaseTestCase {
 
     private static Logger logger = Logger.getLogger(UserManagerTest.class);
