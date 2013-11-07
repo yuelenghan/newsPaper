@@ -52,15 +52,15 @@ public class UserDaoTest extends BaseTestCase {
 
     @Test
     public void testGetOld() {
-        User user = userDao.getOld(1L, 2);
-        logger.debug("用户名 = " + user.getName());
+//        User user = userDao.getOld(1L, 2);
+//        logger.debug("用户名 = " + user.getName());
     }
 
     @Test
     public void testGetRevisions() {
-        List<Number> list = userDao.getRevisions(1L);
-        for (Number num : list) {
-            System.out.println("num = " + num);
-        }
+//        List<Number> list = userDao.getRevisions(1L);
+//        for (Number num : list) {
+//            System.out.println("num = " + num);
+//        }
     }
 }
