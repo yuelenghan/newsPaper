@@ -13,6 +13,7 @@ import java.util.Properties;
  */
 public class ConstantUtil {
     public static String INDEX_BASE;
+    public static String UPLOAD_TEMP_PATH;
 
     static {
         InputStream in = ConstantUtil.class.getResourceAsStream("/constant.properties");
@@ -20,6 +21,7 @@ public class ConstantUtil {
         try {
             prop.load(in);
             INDEX_BASE = prop.getProperty("hibernate.search.default.indexBase").trim();
+            UPLOAD_TEMP_PATH = prop.getProperty("upload.temp.path").trim();
         } catch (IOException e) {
             e.printStackTrace();
         }

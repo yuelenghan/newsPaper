@@ -1,5 +1,9 @@
 package com.ghtn.model;
 
+import org.hibernate.search.annotations.DocumentId;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,6 +16,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "t_contacts")
+@Indexed
 public class Contacts implements Serializable {
     private Long id;
     private Tenant tenant;
@@ -27,6 +32,7 @@ public class Contacts implements Serializable {
     private String ext5;
 
     @Id
+    @DocumentId
     @GeneratedValue
     public Long getId() {
         return id;
@@ -56,6 +62,7 @@ public class Contacts implements Serializable {
         this.contactsType = contactsType;
     }
 
+    @Field
     public String getName() {
         return name;
     }
@@ -64,6 +71,7 @@ public class Contacts implements Serializable {
         this.name = name;
     }
 
+    @Field
     public String getIdCard() {
         return idCard;
     }
@@ -72,6 +80,7 @@ public class Contacts implements Serializable {
         this.idCard = idCard;
     }
 
+    @Field
     public String getPhone() {
         return phone;
     }
@@ -80,6 +89,7 @@ public class Contacts implements Serializable {
         this.phone = phone;
     }
 
+    @Field
     public String getEmail() {
         return email;
     }

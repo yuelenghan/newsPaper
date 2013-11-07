@@ -27,4 +27,9 @@ public class ContactsManagerTest extends BaseTestCase {
 
         contactsManager.save(contacts);
     }
+
+    @Test
+    public void testBatchImportContacts() throws Exception {
+        contactsManager.batchImportContacts(null, null, "d:/temp/通讯录模板.xls");
+    }
 }

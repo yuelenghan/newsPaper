@@ -352,6 +352,8 @@
         <timeToLiveSeconds>100000</timeToLiveSeconds>
         <diskPersistent>false</diskPersistent>
 
+        <upload.temp.path>d:/temp</upload.temp.path>
+
         <encoding>utf-8</encoding>
     </properties>
 </project>
