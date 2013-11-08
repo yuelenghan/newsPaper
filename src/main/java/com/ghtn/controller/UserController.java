@@ -31,7 +31,9 @@ public class UserController {
     public String addUser(User user) {
         logger.debug("进入UserController--addUser");
         try {
-            userManager.save(user);
+            if (user != null) {
+                userManager.save(user);
+            }
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             return "error";
