@@ -4,7 +4,6 @@ import org.apache.poi.POIXMLDocument;
 import org.apache.poi.POIXMLTextExtractor;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.Paragraph;
@@ -12,6 +11,8 @@ import org.apache.poi.hwpf.usermodel.Range;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
@@ -114,18 +115,25 @@ public class FileUtil {
     /**
      * 读取03版excel文件的内容
      *
-     * @param fileName
+     * @param fileName 文件全名
+     * @param fileType 文件类型，2003或2007
      * @return
      * @throws Exception
      */
-    public static String Excel_03_Reader(String fileName) throws Exception {
+    public static String ExcelReader(String fileName, String fileType) throws Exception {
         StringBuffer temp = new StringBuffer();
         FileInputStream fis = new FileInputStream(fileName);
-
-        HSSFWorkbook wb = new HSSFWorkbook(fis);
+        Workbook wb;
+        if (fileType.trim().equals("2003")) {
+            wb = new HSSFWorkbook(fis);
+        } else if (fileType.trim().equals("2007")) {
+            wb = new XSSFWorkbook(fis);
+        } else {
+            throw new FileNotFoundException("文件类型必须为'2003'或'2007'！");
+        }
 
         for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-            HSSFSheet sheet = wb.getSheetAt(i);
+            Sheet sheet = wb.getSheetAt(i);
             for (Iterator<Row> rowIt = sheet.iterator(); rowIt.hasNext(); ) {
                 Row r = rowIt.next();
                 for (Iterator<Cell> cellIt = r.iterator(); cellIt.hasNext(); ) {
@@ -154,45 +162,54 @@ public class FileUtil {
      * 读取03版excel文件的内容，把返回的内容用list封装起来
      *
      * @param fileName  文件全名
+     * @param fileType 文件类型，2003或2007
      * @param startLine 起始行,从1开始
      * @return list封装之后的内容
      * @throws Exception
      */
-    public static List<Map<Integer, String>> Excel_03_Reader(String fileName, int startLine) throws Exception {
-        if (exists(fileName)) {
+    public static List<Map<Integer, String>> ExcelReader(String fileName, String fileType, int startLine) throws Exception {
+        if (exists(fileName) && !StringUtil.isNullStr(fileType)) {
             List<Map<Integer, String>> list = new ArrayList<>();
 
             FileInputStream fis = new FileInputStream(fileName);
-            HSSFWorkbook wb = new HSSFWorkbook(fis);
+            Workbook wb;
+            if (fileType.trim().equals("2003")) {
+                wb = new HSSFWorkbook(fis);
+            } else if (fileType.trim().equals("2007")) {
+                wb = new XSSFWorkbook(fis);
+            } else {
+                throw new FileNotFoundException("文件类型必须为'2003'或'2007'！");
+            }
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
             if (wb.getNumberOfSheets() > 1) {
                 // 不止一个sheet
                 for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-                    HSSFSheet sheet = wb.getSheetAt(i);
+                    Sheet sheet = wb.getSheetAt(i);
                     loopExcelSheet(list, sheet, startLine, sdf);
                 }
             } else {
-                HSSFSheet sheet = wb.getSheetAt(0);
+                Sheet sheet = wb.getSheetAt(0);
                 loopExcelSheet(list, sheet, startLine, sdf);
             }
 
             return list;
         } else {
-            throw new FileNotFoundException();
+            throw new FileNotFoundException("文件不存在！");
         }
 
     }
 
     /**
      * 循环sheet
+     *
      * @param list
      * @param sheet
      * @param startLine
      * @param sdf
      */
-    private static void loopExcelSheet(List<Map<Integer, String>> list, HSSFSheet sheet, int startLine, SimpleDateFormat sdf) {
+    private static void loopExcelSheet(List<Map<Integer, String>> list, Sheet sheet, int startLine, SimpleDateFormat sdf) {
         int line = 1; //当前行
 
         for (Iterator<Row> rowIt = sheet.iterator(); rowIt.hasNext(); ) {
@@ -235,44 +252,6 @@ public class FileUtil {
             line++;
         }
 
-    }
-
-    /**
-     * 读取07版excel文件的内容
-     *
-     * @param fileName
-     * @return
-     * @throws Exception
-     */
-    public static String Excel_07_Reader(String fileName) throws Exception {
-        StringBuffer temp = new StringBuffer();
-        FileInputStream fis = new FileInputStream(fileName);
-
-        XSSFWorkbook wb = new XSSFWorkbook(fis);
-        for (int i = 0; i < wb.getNumberOfSheets(); i++) {
-            XSSFSheet sheet = wb.getSheetAt(i);
-            for (Iterator<Row> rowIt = sheet.iterator(); rowIt.hasNext(); ) {
-                Row r = rowIt.next();
-                for (Iterator<Cell> cellIt = r.iterator(); cellIt.hasNext(); ) {
-                    Cell cell = cellIt.next();
-                    String cellContent = "";
-
-                    //如果是数字类型
-                    if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                        cellContent = String
-                                .valueOf(cell.getNumericCellValue());
-                    }
-                    //如果是字符串类型
-                    if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-                        cellContent = cell.getStringCellValue();
-                    }
-
-                    temp.append(cellContent);
-                }
-            }
-        }
-        fis.close();
-        return getPureText(temp.toString());
     }
 
     /**

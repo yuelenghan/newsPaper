@@ -37,29 +37,31 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      */
     @Override
     public void batchImportContacts(Tenant tenant, ContactsType contactsType, String fileName) throws Exception {
+        List<Map<Integer, String>> list;
         String fileExtension = FileUtil.getFileExtension(fileName);
         if (fileExtension.equals("xls")) {
             // 03版excel文件
-            List<Map<Integer, String>> list = FileUtil.Excel_03_Reader(fileName, 2);
-            if (list != null && list.size() > 0) {
-                for (Map<Integer, String> map : list) {
-                    Contacts contacts = new Contacts();
-                    contacts.setName(map.get(0));
-                    contacts.setIdCard(map.get(1));
-                    contacts.setPhone(map.get(2));
-                    contacts.setEmail(map.get(3));
-
-                    contacts.setTenant(tenant);
-                    contacts.setContactsType(contactsType);
-                    contactsDao.save(contacts);
-                }
-            }
+            list = FileUtil.ExcelReader(fileName, "2003", 2);
         } else if (fileExtension.equals("xlsx")) {
             // 07版excel文件
-
+            list = FileUtil.ExcelReader(fileName, "2007", 2);
         } else {
             // 不是excel文件
-            throw new FileFormatException();
+            throw new FileFormatException("导入模板必须为excel文件！");
+        }
+
+        if (list != null && list.size() > 0) {
+            for (Map<Integer, String> map : list) {
+                Contacts contacts = new Contacts();
+                contacts.setName(map.get(0));
+                contacts.setIdCard(map.get(1));
+                contacts.setPhone(map.get(2));
+                contacts.setEmail(map.get(3));
+
+                contacts.setTenant(tenant);
+                contacts.setContactsType(contactsType);
+                contactsDao.save(contacts);
+            }
         }
     }
 }

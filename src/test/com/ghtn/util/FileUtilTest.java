@@ -22,18 +22,20 @@ public class FileUtilTest {
     }
 
     @Test
-    public void testExcel_03_Reader() throws Exception {
-        List<Map<Integer, String>> list =  FileUtil.Excel_03_Reader("d:/temp/通讯录模板.xls", 2);
+    public void testExcelReader() throws Exception {
+        List<Map<Integer, String>> list = FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007", 2);
         if (list != null) {
             logger.debug(list.size());
             for (int i = 0; i < list.size(); i++) {
                 Map<Integer, String> map = list.get(i);
-                logger.debug("================第" + (i+1) + "条记录======================");
+                logger.debug("================第" + (i + 1) + "条记录======================");
                 logger.debug("姓名 = " + map.get(0));
                 logger.debug("身份证号 = " + map.get(1));
                 logger.debug("手机号 = " + map.get(2));
                 logger.debug("邮箱 = " + map.get(3));
             }
         }
+
+        logger.debug(FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007"));
     }
 }
