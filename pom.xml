@@ -251,7 +251,7 @@
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
-        <finalName>ssh_base</finalName>
+        <finalName>newsPaper</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -268,7 +268,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <warName>ssh_base</warName>
+                    <warName>newsPaper</warName>
                     <escapeString>\</escapeString>
                     <webResources>
                         <resource>

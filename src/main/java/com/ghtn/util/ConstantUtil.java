@@ -24,6 +24,12 @@ public class ConstantUtil {
             UPLOAD_TEMP_PATH = prop.getProperty("upload.temp.path").trim();
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
         }
     }
 }
