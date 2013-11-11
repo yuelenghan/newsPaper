@@ -2,6 +2,8 @@ package com.ghtn.controller;
 
 import com.ghtn.model.Contacts;
 import com.ghtn.service.ContactsManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +20,8 @@ import javax.annotation.Resource;
 @RequestMapping("/contacts/")
 public class ContactsController {
 
-    private static Logger logger = Logger.getLogger(ContactsController.class);
+    private static Log log = LogFactory.getLog(ContactsController.class);
+
     private ContactsManager contactsManager;
 
     @Resource
@@ -27,7 +30,10 @@ public class ContactsController {
     }
 
     @RequestMapping("addContacts")
-    public @ResponseBody void addContacts(Contacts contacts) {
+    public @ResponseBody Contacts addContacts(Contacts contacts) {
+        contacts = new Contacts();
+        contacts.setName("test");
+        return contactsManager.save(contacts);
     }
 
 }

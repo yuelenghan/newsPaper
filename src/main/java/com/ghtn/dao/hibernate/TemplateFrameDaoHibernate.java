@@ -15,4 +15,5 @@ public class TemplateFrameDaoHibernate extends GenericDaoHibernate<TemplateFrame
     public TemplateFrameDaoHibernate() {
         super(TemplateFrame.class);
     }
+
 }

@@ -2,6 +2,7 @@ package com.ghtn.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,7 +21,7 @@ public class Template implements Serializable {
     private NewsType newsType;
 
     private Set<FrameTemp> frameTempSet;
-    private Set<TemplateFrame> templateFrameSet;
+    private List<TemplateFrame> templateFrameList;
     private Set<Tag> tagSet;
 
     @Id
@@ -71,12 +72,13 @@ public class Template implements Serializable {
     }
 
     @OneToMany(mappedBy = "template", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    public Set<TemplateFrame> getTemplateFrameSet() {
-        return templateFrameSet;
+    @OrderBy("frameIndex")
+    public List<TemplateFrame> getTemplateFrameList() {
+        return templateFrameList;
     }
 
-    public void setTemplateFrameSet(Set<TemplateFrame> templateFrameSet) {
-        this.templateFrameSet = templateFrameSet;
+    public void setTemplateFrameList(List<TemplateFrame> templateFrameList) {
+        this.templateFrameList = templateFrameList;
     }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

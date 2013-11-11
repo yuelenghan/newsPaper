@@ -71,9 +71,15 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         return sess.createCriteria(persistentClass).list();
     }
 
+    @Override
+    public List<T> getAll(int start, int limit) {
+        Session sess = getSession();
+        return sess.createCriteria(persistentClass).setFirstResult(start).setMaxResults(limit).list();
+    }
+
     public List<T> getAllDistinct() {
-        Collection<T> result = new LinkedHashSet<T>(getAll());
-        return new ArrayList<T>(result);
+        Collection<T> result = new LinkedHashSet<>(getAll());
+        return new ArrayList<>(result);
     }
 
     /**

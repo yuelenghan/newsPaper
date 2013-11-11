@@ -25,20 +25,7 @@
     <mvc:resources mapping="/scripts/**" location="/scripts/"/>
 
     <!-- 日志拦截器 -->
-    <!--<bean id="loggerInterception" class="com.ghtn.interceptor.LoggerInterception" />-->
-    <!--<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">-->
-        <!--<property name="interceptors">-->
-            <!--<list>-->
-                <!--<ref bean="loggerInterception"/>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
-
     <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/scripts/**"/>
-            <bean class="com.ghtn.interceptor.LoggerInterception"/>
-        </mvc:interceptor>
+        <bean class="com.ghtn.interceptor.LogInterceptor"/>
     </mvc:interceptors>
 </beans>

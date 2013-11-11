@@ -2,11 +2,15 @@ package com.ghtn.dao;
 
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.Frame;
+import com.ghtn.model.Template;
 import com.ghtn.model.TemplateFrame;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * User: Administrator
@@ -16,6 +20,8 @@ import javax.annotation.Resource;
 public class TemplateFrameDaoTest extends BaseTestCase {
 
     private TemplateFrameDao templateFrameDao;
+    private TemplateDao templateDao;
+    private static Log log = LogFactory.getLog(TemplateFrameDaoTest.class);
 
     @Resource
     public void setTemplateFrameDao(TemplateFrameDao templateFrameDao) {
@@ -29,4 +35,5 @@ public class TemplateFrameDaoTest extends BaseTestCase {
 
         templateFrameDao.save(templateFrame);
     }
+
 }

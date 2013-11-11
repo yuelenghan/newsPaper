@@ -2,7 +2,8 @@ package com.ghtn.controller;
 
 import com.ghtn.model.User;
 import com.ghtn.service.UserManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -18,8 +19,8 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/user/")
 public class UserController {
+    private static Log log = LogFactory.getLog(UserController.class);
 
-    private static Logger logger = Logger.getLogger(UserController.class);
     private UserManager userManager;
 
     @Resource
@@ -29,7 +30,6 @@ public class UserController {
 
     @RequestMapping("addUser")
     public String addUser(User user) {
-        logger.debug("进入UserController--addUser");
         try {
             if (user != null) {
                 userManager.save(user);

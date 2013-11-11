@@ -71,6 +71,7 @@
             <tx:method name="merge*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="del*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="batchImport*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="get*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="count*" propagation="REQUIRED" read-only="true"/>
             <tx:method name="find*" propagation="REQUIRED" read-only="true"/>

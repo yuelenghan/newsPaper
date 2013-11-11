@@ -1,6 +1,7 @@
 package com.ghtn.util;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,29 +14,29 @@ import java.util.Map;
  */
 public class FileUtilTest {
 
-    private static Logger logger = Logger.getLogger(FileUtilTest.class);
+    private static Log log = LogFactory.getLog(FileUtilTest.class);
 
     @Test
     public void testGetFileExtension() throws Exception {
         String extension = FileUtil.getFileExtension("index.exe.html");
-        logger.debug(extension);
+        log.debug(extension);
     }
 
     @Test
     public void testExcelReader() throws Exception {
         List<Map<Integer, String>> list = FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007", 2);
         if (list != null) {
-            logger.debug(list.size());
+            log.debug(list.size());
             for (int i = 0; i < list.size(); i++) {
                 Map<Integer, String> map = list.get(i);
-                logger.debug("================第" + (i + 1) + "条记录======================");
-                logger.debug("姓名 = " + map.get(0));
-                logger.debug("身份证号 = " + map.get(1));
-                logger.debug("手机号 = " + map.get(2));
-                logger.debug("邮箱 = " + map.get(3));
+                log.debug("================第" + (i + 1) + "条记录======================");
+                log.debug("姓名 = " + map.get(0));
+                log.debug("身份证号 = " + map.get(1));
+                log.debug("手机号 = " + map.get(2));
+                log.debug("邮箱 = " + map.get(3));
             }
         }
 
-        logger.debug(FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007"));
+        log.debug(FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007"));
     }
 }

@@ -1,6 +1,7 @@
 package com.ghtn.util;
 
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.JoinPoint;
 
 /**
@@ -10,15 +11,15 @@ import org.aspectj.lang.JoinPoint;
  */
 public class LogUtil {
 
-    private static Logger logger = Logger.getLogger(LogUtil.class);
+    private static Log log = LogFactory.getLog(LogUtil.class);
 
     public void afterReturn(JoinPoint joinPoint) {
-        logger.debug("=======离开[" + joinPoint.getTarget().getClass() + "]类的["
+        log.debug("=======离开[" + joinPoint.getTarget().getClass() + "]类的["
                 + joinPoint.getSignature().getName() + "]方法==========");
     }
 
     public void before(JoinPoint joinPoint) {
-        logger.debug("=======进入[" + joinPoint.getTarget().getClass() + "]类的["
+        log.debug("=======进入[" + joinPoint.getTarget().getClass() + "]类的["
                 + joinPoint.getSignature().getName() + "]方法==========");
     }
 

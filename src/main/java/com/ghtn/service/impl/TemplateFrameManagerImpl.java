@@ -2,10 +2,14 @@ package com.ghtn.service.impl;
 
 import com.ghtn.dao.GenericDao;
 import com.ghtn.dao.TemplateFrameDao;
+import com.ghtn.model.Frame;
+import com.ghtn.model.Template;
 import com.ghtn.model.TemplateFrame;
 import com.ghtn.service.TemplateFrameManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * User: Administrator
@@ -22,5 +26,16 @@ public class TemplateFrameManagerImpl extends GenericManagerImpl<TemplateFrame, 
     public TemplateFrameManagerImpl(TemplateFrameDao templateFrameDao) {
         super(templateFrameDao);
         this.templateFrameDao = templateFrameDao;
+    }
+
+    /**
+     * 根据模板加载帧
+     *
+     * @param template 模板
+     * @return 帧list
+     */
+    @Override
+    public List<Frame> listFrame(Template template) {
+        return null;
     }
 }

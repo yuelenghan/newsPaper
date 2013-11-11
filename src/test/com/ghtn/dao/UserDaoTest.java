@@ -2,9 +2,9 @@ package com.ghtn.dao;
 
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.User;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class UserDaoTest extends BaseTestCase {
 
-    private static Logger logger = Logger.getLogger(UserDaoTest.class);
+    private static Log log = LogFactory.getLog(UserDaoTest.class);
     private UserDao userDao;
 
     @Resource
@@ -53,7 +53,7 @@ public class UserDaoTest extends BaseTestCase {
     @Test
     public void testGetOld() {
         User user = userDao.getOld(3L, 3);
-        logger.debug("用户名 = " + user.getName());
+        log.debug("用户名 = " + user.getName());
     }
 
     @Test

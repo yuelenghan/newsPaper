@@ -2,9 +2,9 @@ package com.ghtn.service;
 
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.User;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 
@@ -17,7 +17,7 @@ import javax.annotation.Resource;
  */
 public class UserManagerTest extends BaseTestCase {
 
-    private static Logger logger = Logger.getLogger(UserManagerTest.class);
+    private static Log log = LogFactory.getLog(UserManagerTest.class);
 
     private UserManager userManager;
 
@@ -54,7 +54,7 @@ public class UserManagerTest extends BaseTestCase {
     public void testGetOld() throws Exception {
         User user = userManager.getOld(3L, 4);
         if (user != null) {
-            logger.debug("用户名 = " + user.getName());
+            log.debug("用户名 = " + user.getName());
         }
     }
 }
