@@ -13,13 +13,13 @@ import java.util.List;
  * Date: 13-11-7
  * Time: 上午9:08
  */
-public class AuditGenerciManagerImpl<T, PK extends Serializable> extends GenericManagerImpl
+public class AuditGenericManagerImpl<T, PK extends Serializable> extends GenericManagerImpl
         implements AuditGenericManager<T, PK> {
 
     private AuditGenericDao auditGenericDao;
 
     @Autowired
-    public AuditGenerciManagerImpl(AuditGenericDao auditGenericDao) {
+    public AuditGenericManagerImpl(AuditGenericDao auditGenericDao) {
         super(auditGenericDao);
         this.auditGenericDao = auditGenericDao;
     }
