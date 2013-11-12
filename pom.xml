@@ -286,8 +286,13 @@
                 <version>8.1.11.v20130520</version>
                 <configuration>
                     <webApp>
-                        <contextPath>/</contextPath>
+                        <contextPath>/newsPaper</contextPath>
                     </webApp>
+                    <connectors>
+                        <connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
+                            <port>8082</port>
+                        </connector>
+                    </connectors>
                 </configuration>
             </plugin>
         </plugins>
