@@ -113,7 +113,7 @@ public class FileUtil {
     }
 
     /**
-     * 读取03版excel文件的内容
+     * 读取excel文件的内容
      *
      * @param fileName 文件全名
      * @param fileType 文件类型，2003或2007
@@ -159,7 +159,7 @@ public class FileUtil {
     }
 
     /**
-     * 读取03版excel文件的内容，把返回的内容用list封装起来
+     * 读取excel文件的内容，把返回的内容用list封装起来
      *
      * @param fileName  文件全名
      * @param fileType 文件类型，2003或2007
