@@ -13,13 +13,14 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * created by lh
@@ -162,14 +163,14 @@ public class FileUtil {
      * 读取excel文件的内容，把返回的内容用list封装起来
      *
      * @param fileName  文件全名
-     * @param fileType 文件类型，2003或2007
+     * @param fileType  文件类型，2003或2007
      * @param startLine 起始行,从1开始
      * @return list封装之后的内容
      * @throws Exception
      */
-    public static List<Map<Integer, String>> ExcelReader(String fileName, String fileType, int startLine) throws Exception {
+    public static List<Object[]> ExcelReader(String fileName, String fileType, int startLine) throws Exception {
         if (exists(fileName) && !StringUtil.isNullStr(fileType)) {
-            List<Map<Integer, String>> list = new ArrayList<>();
+            List<Object[]> list = new ArrayList<>();
 
             FileInputStream fis = new FileInputStream(fileName);
             Workbook wb;
@@ -209,7 +210,7 @@ public class FileUtil {
      * @param startLine
      * @param sdf
      */
-    private static void loopExcelSheet(List<Map<Integer, String>> list, Sheet sheet, int startLine, SimpleDateFormat sdf) {
+    private static void loopExcelSheet(List<Object[]> list, Sheet sheet, int startLine, SimpleDateFormat sdf) {
         int line = 1; //当前行
 
         for (Iterator<Row> rowIt = sheet.iterator(); rowIt.hasNext(); ) {
@@ -219,35 +220,52 @@ public class FileUtil {
                 continue;
             }
             int n = 0;
-            Map<Integer, String> map = new HashMap<>();
+            Object[] obj = new Object[r.getLastCellNum()];
 
             for (Iterator<Cell> cellIt = r.iterator(); cellIt.hasNext(); ) {
                 Cell cell = cellIt.next();
                 String cellContent = "";
 
-                //如果是数字类型
-                if (cell.getCellType() == HSSFCell.CELL_TYPE_NUMERIC) {
-                    //如果是日期类型
-                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                        cellContent = sdf.format(cell.getDateCellValue());
-                    } else {
-                        cellContent = String
-                                .valueOf(cell.getNumericCellValue());
+                if (cell != null) {
+                    switch (cell.getCellType()) {
+                        // 数字
+                        case HSSFCell.CELL_TYPE_NUMERIC:
+                            //如果是日期
+                            if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                                cellContent = sdf.format(cell.getDateCellValue());
+                            } else {
+                                cellContent = String
+                                        .valueOf(cell.getNumericCellValue());
+                            }
+                            break;
+                        // 字符串
+                        case HSSFCell.CELL_TYPE_STRING:
+                            cellContent = cell.getStringCellValue();
+                            break;
+                        // boolean
+                        case HSSFCell.CELL_TYPE_BOOLEAN:
+                            cellContent = cell.getBooleanCellValue() + "";
+                            break;
+                        // 公式
+                        case HSSFCell.CELL_TYPE_FORMULA:
+                            cellContent = cell.getCellFormula();
+                            break;
+                        // 空值
+                        case HSSFCell.CELL_TYPE_BLANK:
+                            break;
+                        // 错误
+                        case HSSFCell.CELL_TYPE_ERROR:
+                            break;
+                        default:
+                            break;
                     }
                 }
 
-                //如果是字符串类型
-                if (cell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-                    cellContent = cell.getStringCellValue();
-                }
-
-
-                map.put(n, cellContent);
-
+                obj[n] = cellContent;
                 n++;
             }
 
-            list.add(map);
+            list.add(obj);
 
             line++;
         }

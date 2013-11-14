@@ -24,19 +24,19 @@ public class FileUtilTest {
 
     @Test
     public void testExcelReader() throws Exception {
-        List<Map<Integer, String>> list = FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007", 2);
+        List<Object[]> list = FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007", 2);
         if (list != null) {
             log.debug(list.size());
             for (int i = 0; i < list.size(); i++) {
-                Map<Integer, String> map = list.get(i);
+                Object[] obj = list.get(i);
                 log.debug("================第" + (i + 1) + "条记录======================");
-                log.debug("姓名 = " + map.get(0));
-                log.debug("身份证号 = " + map.get(1));
-                log.debug("手机号 = " + map.get(2));
-                log.debug("邮箱 = " + map.get(3));
+                log.debug("姓名 = " + obj[0]);
+                log.debug("身份证号 = " + obj[1]);
+                log.debug("手机号 = " + obj[2]);
+                log.debug("邮箱 = " + obj[3]);
             }
         }
 
-        log.debug(FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007"));
+      //  log.debug(FileUtil.ExcelReader("d:/temp/通讯录模板.xlsx", "2007"));
     }
 }

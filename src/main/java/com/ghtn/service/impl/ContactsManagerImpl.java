@@ -37,7 +37,7 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      */
     @Override
     public void batchImportContacts(Tenant tenant, ContactsType contactsType, String fileName) throws Exception {
-        List<Map<Integer, String>> list;
+        List<Object[]> list;
         String fileExtension = FileUtil.getFileExtension(fileName);
         if (fileExtension.equals("xls")) {
             // 03版excel文件
@@ -51,12 +51,12 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
         }
 
         if (list != null && list.size() > 0) {
-            for (Map<Integer, String> map : list) {
+            for (Object[] obj : list) {
                 Contacts contacts = new Contacts();
-                contacts.setName(map.get(0));
-                contacts.setIdCard(map.get(1));
-                contacts.setPhone(map.get(2));
-                contacts.setEmail(map.get(3));
+                contacts.setName(obj[0].toString());
+                contacts.setIdCard(obj[1].toString());
+                contacts.setPhone(obj[2].toString());
+                contacts.setEmail(obj[3].toString());
 
                 contacts.setTenant(tenant);
                 contacts.setContactsType(contactsType);
