@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -43,7 +46,9 @@ public class ContactsTypeController {
     @ResponseBody
     public String removeContactsType(ContactsType contactsType) {
         try {
-            contactsTypeManager.remove(contactsType);
+            // 存在关联关系时，直接remove(contactsType)会有问题
+            //contactsTypeManager.remove(contactsType);
+            contactsTypeManager.remove(contactsType.getId());
             return ConstantUtil.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,9 +56,9 @@ public class ContactsTypeController {
         }
     }
 
-    @RequestMapping("/listContactsType")
+    @RequestMapping("/getContactsTypeTree")
     @ResponseBody
-    public List<ContactsType> listContactsType() {
-        return contactsTypeManager.getAll();
+    public List getContactsTypeTree() {
+        return contactsTypeManager.getContactsTypeTree(null);
     }
 }

@@ -1,7 +1,16 @@
 package com.ghtn.model;
 
+import org.hibernate.annotations.*;
+import org.hibernate.annotations.Cache;
+import org.hibernate.type.YesNoType;
+
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -13,16 +22,18 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "t_contacts_type")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ContactsType implements Serializable {
     private Long id;
     private Tenant tenant;
     private String name;
-    private String ext1;
-    private String ext2;
-    private String ext3;
-    private String ext4;
-    private String ext5;
+    private ContactsType parent;
+    private Boolean root;
+    private Boolean leaf;
+    private String pathId;
+    private String pathName;
 
+    private List<ContactsType> children;
     private Set<Contacts> contactsSet;
 
     @Id
@@ -53,44 +64,24 @@ public class ContactsType implements Serializable {
         this.name = name;
     }
 
-    public String getExt1() {
-        return ext1;
+    @ManyToOne
+    @JoinColumn(name = "parentId")
+    public ContactsType getParent() {
+        return parent;
     }
 
-    public void setExt1(String ext1) {
-        this.ext1 = ext1;
+    public void setParent(ContactsType parent) {
+        this.parent = parent;
     }
 
-    public String getExt2() {
-        return ext2;
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
+    @OrderBy("id")
+    public List<ContactsType> getChildren() {
+        return children;
     }
 
-    public void setExt2(String ext2) {
-        this.ext2 = ext2;
-    }
-
-    public String getExt3() {
-        return ext3;
-    }
-
-    public void setExt3(String ext3) {
-        this.ext3 = ext3;
-    }
-
-    public String getExt4() {
-        return ext4;
-    }
-
-    public void setExt4(String ext4) {
-        this.ext4 = ext4;
-    }
-
-    public String getExt5() {
-        return ext5;
-    }
-
-    public void setExt5(String ext5) {
-        this.ext5 = ext5;
+    public void setChildren(List<ContactsType> children) {
+        this.children = children;
     }
 
     @OneToMany(mappedBy = "contactsType", cascade = CascadeType.ALL)
@@ -100,5 +91,39 @@ public class ContactsType implements Serializable {
 
     public void setContactsSet(Set<Contacts> contactsSet) {
         this.contactsSet = contactsSet;
+    }
+
+    @Type(type = "yes_no")
+    public Boolean getRoot() {
+        return root;
+    }
+
+    public void setRoot(Boolean root) {
+        this.root = root;
+    }
+
+    @Type(type = "yes_no")
+    public Boolean getLeaf() {
+        return leaf;
+    }
+
+    public void setLeaf(Boolean leaf) {
+        this.leaf = leaf;
+    }
+
+    public String getPathId() {
+        return pathId;
+    }
+
+    public void setPathId(String pathId) {
+        this.pathId = pathId;
+    }
+
+    public String getPathName() {
+        return pathName;
+    }
+
+    public void setPathName(String pathName) {
+        this.pathName = pathName;
     }
 }

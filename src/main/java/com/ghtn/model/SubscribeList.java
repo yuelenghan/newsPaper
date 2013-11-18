@@ -21,7 +21,7 @@ public class SubscribeList implements Serializable {
     private NewsType newsType;
     private NewsPaper newsPaper;
     private Date subscribeTime;
-    private boolean unsubscribe;
+    private Boolean unsubscribe;
     private Date unsubscribeTime;
 
     @Id
@@ -74,11 +74,11 @@ public class SubscribeList implements Serializable {
     }
 
     @Type(type = "yes_no")
-    public boolean isUnsubscribe() {
+    public Boolean isUnsubscribe() {
         return unsubscribe;
     }
 
-    public void setUnsubscribe(boolean unsubscribe) {
+    public void setUnsubscribe(Boolean unsubscribe) {
         this.unsubscribe = unsubscribe;
     }
 
