@@ -64,24 +64,7 @@ public class ContactsTypeController {
     @ResponseBody
     public String addChild(ContactsType contactsType) {
         try {
-            ContactsType parent = contactsTypeManager.get(contactsType.getId());
-            ContactsType child = new ContactsType();
-            child.setRoot(false);
-            child.setLeaf(true);
-            child.setName(contactsType.getName());
-            child.setPathName(parent.getPathName() + "/" + child.getName());
-            child.setParent(parent);
-            // TODO: 设置租户
-            child.setTenant(null);
-
-            child = contactsTypeManager.save(child);
-            // 更新pathId
-            child.setPathId(parent.getPathId() + "/" + child.getId());
-            contactsTypeManager.save(child);
-
-            parent.setLeaf(false);
-            contactsTypeManager.save(parent);
-
+            contactsTypeManager.addChild(contactsType);
             return ConstantUtil.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

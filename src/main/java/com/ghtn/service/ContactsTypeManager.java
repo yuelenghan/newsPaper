@@ -15,4 +15,5 @@ public interface ContactsTypeManager extends GenericManager<ContactsType, Long> 
 
     List getContactsTypeTree(Tenant tenant);
 
+    void addChild(ContactsType contactsType);
 }

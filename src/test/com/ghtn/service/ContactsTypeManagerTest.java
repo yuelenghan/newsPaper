@@ -7,7 +7,6 @@ import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * User: Administrator
@@ -26,33 +25,36 @@ public class ContactsTypeManagerTest extends BaseTestCase {
 
     @Test
     public void testSave() throws Exception {
-        /*ContactsType contactsType = new ContactsType();
-        contactsType.setName("通讯录类型");
+        ContactsType contactsType = new ContactsType();
+        contactsType.setName("通讯录类别");
         contactsType.setRoot(true);
         contactsType.setLeaf(false);
+        contactsType.setPathName("/通讯录类别");
 
-        contactsTypeManager.save(contactsType);*/
-
-        ContactsType contactsType = new ContactsType();
-        contactsType.setName("技术部");
-        contactsType.setParent(contactsTypeManager.get(1L));
-        contactsType.setRoot(false);
-        contactsType.setLeaf(false);
         contactsType = contactsTypeManager.save(contactsType);
+        contactsType.setPathId("/" + contactsType.getId());
+        contactsTypeManager.save(contactsType);
 
-        ContactsType contactsType2 = new ContactsType();
-        contactsType2.setName("开发一组");
-        contactsType2.setParent(contactsType);
-        contactsType2.setRoot(false);
-        contactsType2.setLeaf(true);
-        contactsTypeManager.save(contactsType2);
-
-        ContactsType contactsType3 = new ContactsType();
-        contactsType3.setName("开发二组");
-        contactsType3.setParent(contactsType);
-        contactsType3.setRoot(false);
-        contactsType3.setLeaf(true);
-        contactsTypeManager.save(contactsType3);
+//        ContactsType contactsType = new ContactsType();
+//        contactsType.setName("技术部");
+//        contactsType.setParent(contactsTypeManager.get(1L));
+//        contactsType.setRoot(false);
+//        contactsType.setLeaf(false);
+//        contactsType = contactsTypeManager.save(contactsType);
+//
+//        ContactsType contactsType2 = new ContactsType();
+//        contactsType2.setName("开发一组");
+//        contactsType2.setParent(contactsType);
+//        contactsType2.setRoot(false);
+//        contactsType2.setLeaf(true);
+//        contactsTypeManager.save(contactsType2);
+//
+//        ContactsType contactsType3 = new ContactsType();
+//        contactsType3.setName("开发二组");
+//        contactsType3.setParent(contactsType);
+//        contactsType3.setRoot(false);
+//        contactsType3.setLeaf(true);
+//        contactsTypeManager.save(contactsType3);
     }
 
     @Test

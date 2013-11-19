@@ -35,8 +35,8 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
 
     @Override
     public List getContactsTypeTree(Tenant tenant) {
-        // 根据租户得到此租户下的通讯录根节点
-        ContactsType root = get(1L);
+        //TODO: 根据租户得到此租户下的通讯录根节点
+        ContactsType root = get(39L);
         Map<String, Object> treeMap = new HashMap<>();
 
         // jquery easyui 的tree组件，接受的json格式必须为数组形式
@@ -51,6 +51,11 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         map.put("id", contactsType.getId());
         map.put("text", contactsType.getName());
         map.put("state", "open");
+        if(contactsType.getRoot()) {
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("root", "y");
+            map.put("attributes", attributes);
+        }
         if (contactsType.getLeaf()) {
             return map;
         } else {
@@ -62,5 +67,26 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
             map.put("children", list);
             return map;
         }
+    }
+
+    @Override
+    public void addChild(ContactsType contactsType) {
+        ContactsType parent = get(contactsType.getId());
+        ContactsType child = new ContactsType();
+        child.setRoot(false);
+        child.setLeaf(true);
+        child.setName(contactsType.getName());
+        child.setPathName(parent.getPathName() + "/" + child.getName());
+        child.setParent(parent);
+        // TODO: 设置租户
+        child.setTenant(null);
+
+        child = save(child);
+        // 更新pathId
+        child.setPathId(parent.getPathId() + "/" + child.getId());
+        save(child);
+
+        parent.setLeaf(false);
+        save(parent);
     }
 }
