@@ -8,11 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * User: Administrator
@@ -34,7 +30,9 @@ public class ContactsTypeController {
     @ResponseBody
     public String saveContactsType(ContactsType contactsType) {
         try {
-            contactsTypeManager.save(contactsType);
+            ContactsType old = contactsTypeManager.get(contactsType.getId());
+            old.setName(contactsType.getName());
+            contactsTypeManager.save(old);
             return ConstantUtil.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,5 +58,34 @@ public class ContactsTypeController {
     @ResponseBody
     public List getContactsTypeTree() {
         return contactsTypeManager.getContactsTypeTree(null);
+    }
+
+    @RequestMapping("/addChild")
+    @ResponseBody
+    public String addChild(ContactsType contactsType) {
+        try {
+            ContactsType parent = contactsTypeManager.get(contactsType.getId());
+            ContactsType child = new ContactsType();
+            child.setRoot(false);
+            child.setLeaf(true);
+            child.setName(contactsType.getName());
+            child.setPathName(parent.getPathName() + "/" + child.getName());
+            child.setParent(parent);
+            // TODO: 设置租户
+            child.setTenant(null);
+
+            child = contactsTypeManager.save(child);
+            // 更新pathId
+            child.setPathId(parent.getPathId() + "/" + child.getId());
+            contactsTypeManager.save(child);
+
+            parent.setLeaf(false);
+            contactsTypeManager.save(parent);
+
+            return ConstantUtil.SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ConstantUtil.ERROR;
+        }
     }
 }
