@@ -14,10 +14,16 @@ import javax.annotation.Resource;
 public class ContactsManagerTest extends BaseTestCase {
 
     private ContactsManager contactsManager;
+    private ContactsTypeManager contactsTypeManager;
 
     @Resource
     public void setContactsManager(ContactsManager contactsManager) {
         this.contactsManager = contactsManager;
+    }
+
+    @Resource
+    public void setContactsTypeManager(ContactsTypeManager contactsTypeManager) {
+        this.contactsTypeManager = contactsTypeManager;
     }
 
     @Test
@@ -30,7 +36,7 @@ public class ContactsManagerTest extends BaseTestCase {
 
     @Test
     public void testBatchImportContacts() throws Exception {
-        contactsManager.batchImportContacts(null, null, "d:/temp/通讯录模板.xlsx");
+        contactsManager.batchImportContacts(null, contactsTypeManager.get(40L), "d:/temp/通讯录模板2.xls");
     }
 
     @Test

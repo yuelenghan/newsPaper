@@ -3,11 +3,13 @@ package com.ghtn.dao;
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.Contacts;
 import com.ghtn.model.ContactsType;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,6 +22,7 @@ import java.util.Set;
 public class ContactsTypeDaoTest extends BaseTestCase {
 
     private ContactsTypeDao contactsTypeDao;
+    private static Log log = LogFactory.getLog(ContactsTypeDaoTest.class);
 
     @Resource
     public void setContactsTypeDao(ContactsTypeDao contactsTypeDao) {
@@ -41,4 +44,10 @@ public class ContactsTypeDaoTest extends BaseTestCase {
         contactsTypeDao.save(contactsType);
     }
 
+    @Test
+    public void testGetLeaves() throws Exception {
+        ContactsType contactsType = contactsTypeDao.get(39L);
+        List<ContactsType> list = contactsTypeDao.getLeaves(contactsType);
+        log.debug(list.size());
+    }
 }

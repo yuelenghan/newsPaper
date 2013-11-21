@@ -89,4 +89,26 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         parent.setLeaf(false);
         save(parent);
     }
+
+    @Override
+    public List<ContactsType> getLeaves(ContactsType contactsType) {
+        List<ContactsType> list = new ArrayList<>();
+        if (contactsType.getLeaf()) {
+            list.add(contactsType);
+            return list;
+        } else {
+            list = contactsTypeDao.getLeaves(contactsType);
+        }
+        return list;
+    }
+
+    /**
+     * 根据租户得到根节点
+     * @param tenant    租户
+     * @return  根节点
+     */
+    @Override
+    public ContactsType getRoot(Tenant tenant) {
+        return contactsTypeDao.getRoot(tenant);
+    }
 }

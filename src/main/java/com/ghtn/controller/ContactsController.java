@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -56,10 +57,15 @@ public class ContactsController {
         }
     }
 
-    @RequestMapping("/listContacts")
+    @RequestMapping("/getContactsByPage")
     @ResponseBody
-    public List<Contacts> listContacts() {
-        return contactsManager.getAll();
+    public Map<String, Object> getContactsByPage(ContactsType contactsType, Integer page, Integer rows) {
+        Map<String, Object> returnMap = new HashMap<>();
+        List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, page, rows);
+        Long totalCount = contactsManager.getContactsCount(contactsType);
+        returnMap.put("total", totalCount);
+        returnMap.put("rows" , list);
+        return returnMap;
     }
 
     @RequestMapping("/batchImportContacts")
