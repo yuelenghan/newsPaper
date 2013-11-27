@@ -60,4 +60,6 @@ public interface ContactsManager extends GenericManager<Contacts, Long> {
      * @return 此类别下共有通讯录条数
      */
     Long getContactsCount(ContactsType contactsType);
+
+    Contacts updateContacts(Contacts contacts);
 }

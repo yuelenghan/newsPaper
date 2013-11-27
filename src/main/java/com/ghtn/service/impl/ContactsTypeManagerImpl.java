@@ -51,14 +51,19 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         map.put("id", contactsType.getId());
         map.put("text", contactsType.getName());
         map.put("state", "open");
-        if(contactsType.getRoot()) {
-            Map<String, String> attributes = new HashMap<>();
+        Map<String, String> attributes = new HashMap<>();
+        if (contactsType.getRoot()) {
             attributes.put("root", "y");
-            map.put("attributes", attributes);
+        } else {
+            attributes.put("root", "n");
         }
         if (contactsType.getLeaf()) {
+            attributes.put("leaf", "y");
+            map.put("attributes", attributes);
             return map;
         } else {
+            attributes.put("leaf", "n");
+            map.put("attributes", attributes);
             List<ContactsType> children = contactsType.getChildren();
             List list = new ArrayList();
             for (ContactsType child : children) {
@@ -104,8 +109,9 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
 
     /**
      * 根据租户得到根节点
-     * @param tenant    租户
-     * @return  根节点
+     *
+     * @param tenant 租户
+     * @return 根节点
      */
     @Override
     public ContactsType getRoot(Tenant tenant) {

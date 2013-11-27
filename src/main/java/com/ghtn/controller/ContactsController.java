@@ -33,11 +33,23 @@ public class ContactsController {
         this.contactsManager = contactsManager;
     }
 
-    @RequestMapping("/saveContacts")
+    @RequestMapping("/addContacts")
     @ResponseBody
-    public String saveContacts(Contacts contacts) {
+    public String addContacts(Contacts contacts) {
         try {
             contactsManager.save(contacts);
+            return ConstantUtil.SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ConstantUtil.ERROR;
+        }
+    }
+
+    @RequestMapping("/updateContacts")
+    @ResponseBody
+    public String updateContacts(Contacts contacts) {
+        try {
+            contactsManager.updateContacts(contacts);
             return ConstantUtil.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,7 +76,7 @@ public class ContactsController {
         List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, page, rows);
         Long totalCount = contactsManager.getContactsCount(contactsType);
         returnMap.put("total", totalCount);
-        returnMap.put("rows" , list);
+        returnMap.put("rows", list);
         return returnMap;
     }
 
@@ -72,7 +84,7 @@ public class ContactsController {
     @ResponseBody
     public String batchImportContacts(String fileName, ContactsType contactsType) {
         try {
-            contactsManager.batchImportContacts(null, contactsType, ConstantUtil.UPLOAD_TEMP_PATH + fileName);
+            contactsManager.batchImportContacts(null, contactsType, ConstantUtil.UPLOAD_TEMP_PATH + "/" + fileName);
             return ConstantUtil.SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

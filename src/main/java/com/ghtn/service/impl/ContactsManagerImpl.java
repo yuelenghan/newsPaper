@@ -50,10 +50,10 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
     public void batchImportContacts(Tenant tenant, ContactsType contactsType, String fileName) throws Exception {
         List<Object[]> list;
         String fileExtension = FileUtil.getFileExtension(fileName);
-        if (fileExtension.equals("xls")) {
+        if (fileExtension.toUpperCase().equals("XLS")) {
             // 03版excel文件
             list = FileUtil.ExcelReader(fileName, "2003", 2);
-        } else if (fileExtension.equals("xlsx")) {
+        } else if (fileExtension.toUpperCase().equals("XLSX")) {
             // 07版excel文件
             list = FileUtil.ExcelReader(fileName, "2007", 2);
         } else {
@@ -175,4 +175,13 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
         }
     }
 
+    @Override
+    public Contacts updateContacts(Contacts contacts) {
+        Contacts old = get(contacts.getId());
+        old.setName(contacts.getName());
+        old.setIdCard(contacts.getIdCard());
+        old.setPhone(contacts.getPhone());
+        old.setEmail(contacts.getEmail());
+        return save(old);
+    }
 }
