@@ -59,7 +59,7 @@ public class Tag implements Serializable {
         this.frameSet = frameSet;
     }
 
-    @ManyToMany(mappedBy = "tagSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tagList", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     public Set<Material> getMaterialSet() {
         return materialSet;
     }

@@ -1,14 +1,18 @@
 package com.ghtn.controller;
 
 import com.ghtn.model.Material;
+import com.ghtn.model.MaterialType;
 import com.ghtn.service.MaterialManager;
 import com.ghtn.util.ConstantUtil;
+import com.ghtn.vo.MaterialVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -26,9 +30,9 @@ public class MaterialController extends BaseController {
         this.materialManager = materialManager;
     }
 
-    @RequestMapping("/saveMaterial")
+    @RequestMapping("/addMaterial")
     @ResponseBody
-    public String saveMaterial(Material material) throws Exception {
+    public String addMaterial(Material material) throws Exception {
         materialManager.save(material);
         return ConstantUtil.SUCCESS;
     }
@@ -40,9 +44,27 @@ public class MaterialController extends BaseController {
         return ConstantUtil.SUCCESS;
     }
 
-    @RequestMapping("/listMaterial")
+    @RequestMapping("/getMaterialByPage")
     @ResponseBody
-    public List<Material> listMaterial() {
-        return materialManager.getAll();
+    public Map<String, Object> getMaterialByPage(MaterialType materialType, String type, Integer page, Integer rows) {
+        Map<String, Object> returnMap = new HashMap<>();
+        List<MaterialVO> list = materialManager.getMaterialByPage(materialType, type, page, rows);
+        Long totalCount = materialManager.getMaterialCount(materialType, type);
+        returnMap.put("total", totalCount);
+        returnMap.put("rows", list);
+        return returnMap;
+    }
+
+    @RequestMapping("/getMaterial")
+    @ResponseBody
+    public MaterialVO getMaterial(Material material) {
+        return materialManager.getMaterial(material);
+    }
+
+    @RequestMapping("/updateMaterial")
+    @ResponseBody
+    public String updateMaterial(Material material) {
+        materialManager.updateMaterial(material);
+        return ConstantUtil.SUCCESS;
     }
 }

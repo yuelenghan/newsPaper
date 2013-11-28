@@ -117,4 +117,11 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
     public ContactsType getRoot(Tenant tenant) {
         return contactsTypeDao.getRoot(tenant);
     }
+
+    @Override
+    public ContactsType updateContactsType(ContactsType contactsType) {
+        ContactsType old = get(contactsType.getId());
+        old.setName(contactsType.getName());
+        return save(old);
+    }
 }

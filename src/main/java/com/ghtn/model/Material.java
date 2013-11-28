@@ -2,6 +2,7 @@ package com.ghtn.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,7 +25,7 @@ public class Material implements Serializable {
     private Material parent;
 
     private Set<Material> child;
-    private Set<Tag> tagSet;
+    private List<Tag> tagList;
 
     @Id
     @GeneratedValue
@@ -111,11 +112,11 @@ public class Material implements Serializable {
     @JoinTable(name = "t_material_tag",
             joinColumns = {@JoinColumn(name = "materialId")},
             inverseJoinColumns = {@JoinColumn(name = "tagId")})
-    public Set<Tag> getTagSet() {
-        return tagSet;
+    public List<Tag> getTagList() {
+        return tagList;
     }
 
-    public void setTagSet(Set<Tag> tagSet) {
-        this.tagSet = tagSet;
+    public void setTagList(List<Tag> tagList) {
+        this.tagList = tagList;
     }
 }

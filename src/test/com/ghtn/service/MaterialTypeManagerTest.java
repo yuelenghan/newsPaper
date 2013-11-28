@@ -23,7 +23,7 @@ public class MaterialTypeManagerTest extends BaseTestCase {
     @Test
     public void testSave() throws Exception {
         MaterialType materialType = new MaterialType();
-        materialType.setName("test");
+        materialType.setName("广告促销");
 
         materialTypeManager.save(materialType);
     }

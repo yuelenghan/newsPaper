@@ -41,6 +41,13 @@ public class MaterialTypeController extends BaseController {
         return ConstantUtil.SUCCESS;
     }
 
+    @RequestMapping("/updateMaterialType")
+    @ResponseBody
+    public String updateMaterialType(MaterialType materialType) throws Exception {
+        materialTypeManager.update(materialType);
+        return ConstantUtil.SUCCESS;
+    }
+
     @RequestMapping("/listMaterialType")
     @ResponseBody
     public List<MaterialTypeVO> listMaterialType() {

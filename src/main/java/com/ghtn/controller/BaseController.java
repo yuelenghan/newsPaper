@@ -22,6 +22,7 @@ public class BaseController {
         log.error("------------发生异常！----------------");
         log.error("Caused by : " + e.getCause());
         log.error("Message : " + e.getMessage());
+        log.error("Exception : ", e);
         return ConstantUtil.ERROR;
     }
 }

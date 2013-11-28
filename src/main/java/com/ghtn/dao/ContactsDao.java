@@ -18,7 +18,7 @@ public interface ContactsDao extends GenericDao<Contacts, Long> {
      * 根据通讯录类别得到通讯录列表
      *
      * @param contactsType 通讯录类别
-     * @param start        当前页码
+     * @param start        起始行
      * @param limit        一页多少行
      * @return 通讯录列表
      */
@@ -28,8 +28,8 @@ public interface ContactsDao extends GenericDao<Contacts, Long> {
      * 根据通讯录类别(集合)得到通讯录列表
      *
      * @param contactsTypeList 通讯录类别(集合)
-     * @param start        当前页码
-     * @param limit        一页多少行
+     * @param start            起始行
+     * @param limit            一页多少行
      * @return 通讯录列表
      */
     List<Contacts> listContactsByPage(List<ContactsType> contactsTypeList, Integer start, Integer limit);
