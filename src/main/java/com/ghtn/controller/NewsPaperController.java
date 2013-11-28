@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/newsPaper")
-public class NewsPaperController {
+public class NewsPaperController extends BaseController {
 
     private NewsPaperManager newsPaperManager;
 
@@ -28,26 +28,16 @@ public class NewsPaperController {
 
     @RequestMapping("/saveNewsPaper")
     @ResponseBody
-    public String saveNewsPaper(NewsPaper newsPaper) {
-        try {
-            newsPaperManager.save(newsPaper);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveNewsPaper(NewsPaper newsPaper) throws Exception {
+        newsPaperManager.save(newsPaper);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeNewsPaper")
     @ResponseBody
-    public String removeNewsPaper(NewsPaper newsPaper) {
-        try {
-            newsPaperManager.remove(newsPaper);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeNewsPaper(NewsPaper newsPaper) throws Exception {
+        newsPaperManager.remove(newsPaper);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listNewsPaper")

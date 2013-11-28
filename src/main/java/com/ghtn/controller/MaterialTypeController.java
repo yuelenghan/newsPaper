@@ -3,6 +3,7 @@ package com.ghtn.controller;
 import com.ghtn.model.MaterialType;
 import com.ghtn.service.MaterialTypeManager;
 import com.ghtn.util.ConstantUtil;
+import com.ghtn.vo.MaterialTypeVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/materialType")
-public class MaterialTypeController {
+public class MaterialTypeController extends BaseController {
 
     private MaterialTypeManager materialTypeManager;
 
@@ -26,33 +27,23 @@ public class MaterialTypeController {
         this.materialTypeManager = materialTypeManager;
     }
 
-    @RequestMapping("/saveMaterialType")
+    @RequestMapping("/addMaterialType")
     @ResponseBody
-    public String saveMaterialType(MaterialType materialType) {
-        try {
-            materialTypeManager.save(materialType);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String addMaterialType(MaterialType materialType) throws Exception {
+        materialTypeManager.save(materialType);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeMaterialType")
     @ResponseBody
-    public String removeMaterialType(MaterialType materialType) {
-        try {
-            materialTypeManager.remove(materialType);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeMaterialType(MaterialType materialType) throws Exception {
+        materialTypeManager.remove(materialType);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listMaterialType")
     @ResponseBody
-    public List<MaterialType> listMaterialType() {
-        return materialTypeManager.getAll();
+    public List<MaterialTypeVO> listMaterialType() {
+        return materialTypeManager.listMaterialType();
     }
 }

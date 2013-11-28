@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/tag")
-public class TagController {
+public class TagController extends BaseController {
 
     private TagManager tagManager;
 
@@ -28,26 +28,16 @@ public class TagController {
 
     @RequestMapping("/saveTag")
     @ResponseBody
-    public String saveTag(Tag tag) {
-        try {
-            tagManager.save(tag);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveTag(Tag tag) throws Exception {
+        tagManager.save(tag);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeTag")
     @ResponseBody
-    public String removeTag(Tag tag) {
-        try {
-            tagManager.remove(tag);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeTag(Tag tag) throws Exception {
+        tagManager.remove(tag);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listTag")

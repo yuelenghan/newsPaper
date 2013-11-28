@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/frame")
-public class FrameController {
+public class FrameController extends BaseController {
 
     private FrameManager frameManager;
 
@@ -28,26 +28,16 @@ public class FrameController {
 
     @RequestMapping("/saveFrame")
     @ResponseBody
-    public String saveFrame(Frame frame) {
-        try {
-            frameManager.save(frame);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveFrame(Frame frame) throws Exception {
+        frameManager.save(frame);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeFrame")
     @ResponseBody
-    public String removeFrame(Frame frame) {
-        try {
-            frameManager.remove(frame);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeFrame(Frame frame) throws Exception {
+        frameManager.remove(frame);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listFrame")

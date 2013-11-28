@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/tenant")
-public class TenantController {
+public class TenantController extends BaseController {
 
     private TenantManager tenantManager;
 
@@ -28,26 +28,16 @@ public class TenantController {
 
     @RequestMapping("/saveTenant")
     @ResponseBody
-    public String saveTenant(Tenant tenant) {
-        try {
-            tenantManager.save(tenant);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveTenant(Tenant tenant) throws Exception {
+        tenantManager.save(tenant);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeTenant")
     @ResponseBody
-    public String removeTenant(Tenant tenant) {
-        try {
-            tenantManager.remove(tenant);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeTenant(Tenant tenant) throws Exception {
+        tenantManager.remove(tenant);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listTenant")

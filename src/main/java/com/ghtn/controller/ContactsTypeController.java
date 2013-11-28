@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/contactsType")
-public class ContactsTypeController {
+public class ContactsTypeController extends BaseController {
 
     private ContactsTypeManager contactsTypeManager;
 
@@ -26,49 +26,33 @@ public class ContactsTypeController {
         this.contactsTypeManager = contactsTypeManager;
     }
 
-    @RequestMapping("/saveContactsType")
+    @RequestMapping("/updateContactsType")
     @ResponseBody
-    public String saveContactsType(ContactsType contactsType) {
-        try {
-            ContactsType old = contactsTypeManager.get(contactsType.getId());
-            old.setName(contactsType.getName());
-            contactsTypeManager.save(old);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String updateContactsType(ContactsType contactsType) throws Exception {
+        contactsTypeManager.updateContactsType(contactsType);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeContactsType")
     @ResponseBody
-    public String removeContactsType(ContactsType contactsType) {
-        try {
-            // 存在关联关系时，直接remove(contactsType)会有问题
-            //contactsTypeManager.remove(contactsType);
-            contactsTypeManager.remove(contactsType.getId());
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeContactsType(ContactsType contactsType) throws Exception {
+        // 存在关联关系时，直接remove(contactsType)会有问题
+        //contactsTypeManager.remove(contactsType);
+        contactsTypeManager.remove(contactsType.getId());
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/getContactsTypeTree")
     @ResponseBody
     public List getContactsTypeTree() {
+        // TODO : 租户
         return contactsTypeManager.getContactsTypeTree(null);
     }
 
     @RequestMapping("/addChild")
     @ResponseBody
-    public String addChild(ContactsType contactsType) {
-        try {
-            contactsTypeManager.addChild(contactsType);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String addChild(ContactsType contactsType) throws Exception {
+        contactsTypeManager.addChild(contactsType);
+        return ConstantUtil.SUCCESS;
     }
 }

@@ -15,7 +15,7 @@ import java.util.List;
  * Time: 下午3:27
  */
 @RequestMapping("/favorite")
-public class FavoriteController {
+public class FavoriteController extends BaseController {
 
     private FavoriteManager favoriteManager;
 
@@ -26,26 +26,16 @@ public class FavoriteController {
 
     @RequestMapping("/saveFavorite")
     @ResponseBody
-    public String saveFavorite(Favorite favorite) {
-        try {
-            favoriteManager.save(favorite);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveFavorite(Favorite favorite) throws Exception {
+        favoriteManager.save(favorite);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeFavorite")
     @ResponseBody
-    public String removeFavorite(Favorite favorite) {
-        try {
-            favoriteManager.remove(favorite);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeFavorite(Favorite favorite) throws Exception {
+        favoriteManager.remove(favorite);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listFavorite")

@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/material")
-public class MaterialController {
+public class MaterialController extends BaseController {
 
     private MaterialManager materialManager;
 
@@ -28,26 +28,16 @@ public class MaterialController {
 
     @RequestMapping("/saveMaterial")
     @ResponseBody
-    public String saveMaterial(Material material) {
-        try {
-            materialManager.save(material);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveMaterial(Material material) throws Exception {
+        materialManager.save(material);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeMaterial")
     @ResponseBody
-    public String removeMaterial(Material material) {
-        try {
-            materialManager.remove(material);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeMaterial(Material material) throws Exception {
+        materialManager.remove(material);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listMaterial")

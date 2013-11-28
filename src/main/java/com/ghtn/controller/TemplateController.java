@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/template")
-public class TemplateController {
+public class TemplateController extends BaseController {
 
     private TemplateManager templateManager;
 
@@ -28,26 +28,16 @@ public class TemplateController {
 
     @RequestMapping("/saveTemplate")
     @ResponseBody
-    public String saveTemplate(Template template) {
-        try {
-            templateManager.save(template);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String saveTemplate(Template template) throws Exception {
+        templateManager.save(template);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeTemplate")
     @ResponseBody
-    public String removeTemplate(Template template) {
-        try {
-            templateManager.remove(template);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeTemplate(Template template) throws Exception {
+        templateManager.remove(template);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/listTemplate")

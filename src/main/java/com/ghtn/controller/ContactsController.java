@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/contacts")
-public class ContactsController {
+public class ContactsController extends BaseController {
 
     private static Log log = LogFactory.getLog(ContactsController.class);
 
@@ -35,38 +35,23 @@ public class ContactsController {
 
     @RequestMapping("/addContacts")
     @ResponseBody
-    public String addContacts(Contacts contacts) {
-        try {
-            contactsManager.save(contacts);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String addContacts(Contacts contacts) throws Exception {
+        contactsManager.save(contacts);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/updateContacts")
     @ResponseBody
-    public String updateContacts(Contacts contacts) {
-        try {
-            contactsManager.updateContacts(contacts);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String updateContacts(Contacts contacts) throws Exception {
+        contactsManager.updateContacts(contacts);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/removeContacts")
     @ResponseBody
-    public String removeContacts(Contacts contacts) {
-        try {
-            contactsManager.remove(contacts);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String removeContacts(Contacts contacts) throws Exception {
+        contactsManager.remove(contacts);
+        return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/getContactsByPage")
@@ -82,14 +67,9 @@ public class ContactsController {
 
     @RequestMapping("/batchImportContacts")
     @ResponseBody
-    public String batchImportContacts(String fileName, ContactsType contactsType) {
-        try {
-            contactsManager.batchImportContacts(null, contactsType, ConstantUtil.UPLOAD_TEMP_PATH + "/" + fileName);
-            return ConstantUtil.SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ConstantUtil.ERROR;
-        }
+    public String batchImportContacts(String fileName, ContactsType contactsType) throws Exception {
+        contactsManager.batchImportContacts(null, contactsType, ConstantUtil.UPLOAD_TEMP_PATH + "/" + fileName);
+        return ConstantUtil.SUCCESS;
     }
 
 }

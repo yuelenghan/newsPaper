@@ -2,6 +2,7 @@ package com.ghtn.controller;
 
 import com.ghtn.model.User;
 import com.ghtn.service.UserManager;
+import com.ghtn.util.ConstantUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -18,7 +19,7 @@ import javax.annotation.Resource;
  */
 @Controller
 @RequestMapping("/user/")
-public class UserController {
+public class UserController extends BaseController {
     private static Log log = LogFactory.getLog(UserController.class);
 
     private UserManager userManager;
@@ -29,15 +30,8 @@ public class UserController {
     }
 
     @RequestMapping("addUser")
-    public String addUser(User user) {
-        try {
-            if (user != null) {
-                userManager.save(user);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-            return "error";
-        }
-        return "success";
+    public String addUser(User user) throws Exception {
+        userManager.save(user);
+        return ConstantUtil.SUCCESS;
     }
 }
