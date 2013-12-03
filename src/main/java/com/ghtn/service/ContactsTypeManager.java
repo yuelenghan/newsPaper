@@ -2,6 +2,7 @@ package com.ghtn.service;
 
 import com.ghtn.model.ContactsType;
 import com.ghtn.model.Tenant;
+import com.ghtn.vo.ContactsTypeVO;
 
 import java.util.List;
 
@@ -12,9 +13,9 @@ import java.util.List;
  */
 public interface ContactsTypeManager extends GenericManager<ContactsType, Long> {
 
-    List getContactsTypeTree(Tenant tenant);
+    List<ContactsTypeVO> getContactsTypeTree(Tenant tenant);
 
-    void addChild(ContactsType contactsType);
+    void addChild(ContactsTypeVO contactsTypeVO);
 
     List<ContactsType> getLeaves(ContactsType contactsType);
 

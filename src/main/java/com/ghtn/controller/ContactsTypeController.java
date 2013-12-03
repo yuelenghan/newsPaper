@@ -3,6 +3,7 @@ package com.ghtn.controller;
 import com.ghtn.model.ContactsType;
 import com.ghtn.service.ContactsTypeManager;
 import com.ghtn.util.ConstantUtil;
+import com.ghtn.vo.ContactsTypeVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,15 +45,15 @@ public class ContactsTypeController extends BaseController {
 
     @RequestMapping("/getContactsTypeTree")
     @ResponseBody
-    public List getContactsTypeTree() {
+    public List<ContactsTypeVO> getContactsTypeTree() {
         // TODO : 租户
         return contactsTypeManager.getContactsTypeTree(null);
     }
 
     @RequestMapping("/addChild")
     @ResponseBody
-    public String addChild(ContactsType contactsType) throws Exception {
-        contactsTypeManager.addChild(contactsType);
+    public String addChild(ContactsTypeVO contactsTypeVO) throws Exception {
+        contactsTypeManager.addChild(contactsTypeVO);
         return ConstantUtil.SUCCESS;
     }
 }
