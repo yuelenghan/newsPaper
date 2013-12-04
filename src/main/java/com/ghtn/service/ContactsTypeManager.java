@@ -13,13 +13,15 @@ import java.util.List;
  */
 public interface ContactsTypeManager extends GenericManager<ContactsType, Long> {
 
-    List<ContactsTypeVO> getContactsTypeTree(Tenant tenant);
+    ContactsTypeVO getContactsTypeTree(Tenant tenant);
 
     void addChild(ContactsTypeVO contactsTypeVO);
 
     List<ContactsType> getLeaves(ContactsType contactsType);
 
     ContactsType updateContactsType(ContactsType contactsType);
+
+    void removeContactsType(ContactsType contactsType) throws Exception;
 
     /**
      * 根据租户得到根节点
@@ -28,4 +30,5 @@ public interface ContactsTypeManager extends GenericManager<ContactsType, Long> 
      * @return 根节点
      */
     ContactsType getRoot(Tenant tenant);
+
 }

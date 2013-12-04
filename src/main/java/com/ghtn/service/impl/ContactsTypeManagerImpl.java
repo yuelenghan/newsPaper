@@ -33,17 +33,17 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
     }
 
     @Override
-    public List<ContactsTypeVO> getContactsTypeTree(Tenant tenant) {
+    public ContactsTypeVO getContactsTypeTree(Tenant tenant) {
         //TODO: 根据租户得到此租户下的通讯录根节点
-        ContactsType root = get(39L);
+        ContactsType root = get(1L);
         //Map<String, Object> treeMap = new HashMap<>();
         ContactsTypeVO contactsTypeVO = new ContactsTypeVO();
 
         // jquery easyui 的tree组件，接受的json格式必须为数组形式
-        List treeList = new ArrayList();
-        treeList.add(getTree(root, contactsTypeVO));
+        /*List treeList = new ArrayList();
+        treeList.add(getTree(root, contactsTypeVO));*/
 
-        return treeList;
+        return getTree(root, contactsTypeVO);
 
     }
 
@@ -87,7 +87,15 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
 
     @Override
     public void addChild(ContactsTypeVO contactsTypeVO) {
-        ContactsType parent = get(contactsTypeVO.getId());
+        ContactsType parent;
+        if (contactsTypeVO.getId() == -1) {
+            // 在根节点下添加
+            // TODO : 得到此租户下的根节点
+            parent = get(1L);
+        } else {
+            parent = get(contactsTypeVO.getId());
+        }
+
         ContactsType child = new ContactsType();
         child.setRoot(false);
         child.setLeaf(true);
@@ -134,5 +142,27 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         ContactsType old = get(contactsType.getId());
         old.setName(contactsType.getName());
         return save(old);
+    }
+
+
+    @Override
+    public void removeContactsType(ContactsType contactsType) throws Exception {
+        contactsType = get(contactsType.getId());
+        ContactsType parent = contactsType.getParent();
+        if (parent != null) {
+            List<ContactsType> children = parent.getChildren();
+            if (children != null && children.size() > 0) {
+                remove(contactsType.getId());
+                children.remove(contactsType);
+                if (children.size() == 0) {
+                    parent.setLeaf(true);
+                    save(parent);
+                }
+            } else {
+                throw new Exception("节点错误! 节点id = " + contactsType.getId());
+            }
+        } else {
+            throw new Exception("此节点没有父节点! 节点id = " + contactsType.getId());
+        }
     }
 }

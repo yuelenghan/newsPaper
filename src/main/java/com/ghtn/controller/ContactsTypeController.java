@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * User: Administrator
@@ -37,15 +36,13 @@ public class ContactsTypeController extends BaseController {
     @RequestMapping("/removeContactsType")
     @ResponseBody
     public String removeContactsType(ContactsType contactsType) throws Exception {
-        // 存在关联关系时，直接remove(contactsType)会有问题
-        //contactsTypeManager.remove(contactsType);
-        contactsTypeManager.remove(contactsType.getId());
+        contactsTypeManager.removeContactsType(contactsType);
         return ConstantUtil.SUCCESS;
     }
 
     @RequestMapping("/getContactsTypeTree")
     @ResponseBody
-    public List<ContactsTypeVO> getContactsTypeTree() {
+    public ContactsTypeVO getContactsTypeTree() {
         // TODO : 租户
         return contactsTypeManager.getContactsTypeTree(null);
     }
