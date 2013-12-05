@@ -56,12 +56,13 @@ public class ContactsController extends BaseController {
 
     @RequestMapping("/getContactsByPage")
     @ResponseBody
-    public Map<String, Object> getContactsByPage(ContactsType contactsType, Integer page, Integer rows) {
+    public Map<String, Object> getContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit) throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
-        List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, page, rows);
+        List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, page, start, limit);
         Long totalCount = contactsManager.getContactsCount(contactsType);
+        returnMap.put("success", true);
         returnMap.put("total", totalCount);
-        returnMap.put("rows", list);
+        returnMap.put("items", list);
         return returnMap;
     }
 

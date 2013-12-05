@@ -81,13 +81,14 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      *
      * @param contactsType 通讯录类别
      * @param page         当前页码
-     * @param rows         一页多少行
+     * @param start        起始行
+     * @param limit        最大行数
      * @return 通讯录列表
      */
     @Override
-    public List<Contacts> listContactsByPage(ContactsType contactsType, Integer page, Integer rows) {
-        Integer start = (page - 1) * rows;
-        Integer limit = rows;
+    public List<Contacts> listContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit) {
+//        Integer start = (page - 1) * rows;
+//        Integer limit = rows;
         return contactsDao.listContactsByPage(contactsType, start, limit);
     }
 
@@ -96,14 +97,15 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      *
      * @param contactsTypeList 通讯录类别集合
      * @param page             当前页码
-     * @param rows             一页多少行
+     * @param start            起始行
+     * @param limit            最大行数
      * @return 通讯录列表
      */
     @Override
-    public List<Contacts> listContactsByPage(List<ContactsType> contactsTypeList, Integer page, Integer rows) {
+    public List<Contacts> listContactsByPage(List<ContactsType> contactsTypeList, Integer page, Integer start, Integer limit) {
         if (contactsTypeList != null && contactsTypeList.size() > 0) {
-            Integer start = (page - 1) * rows;
-            Integer limit = rows;
+//            Integer start = (page - 1) * rows;
+//            Integer limit = rows;
             return contactsDao.listContactsByPage(contactsTypeList, start, limit);
         }
         return null;
@@ -114,14 +116,15 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      *
      * @param contactsType 通讯录类别
      * @param page         当前页码
-     * @param rows         一页多少行
+     * @param start        起始行
+     * @param limit        最大行数
      * @return 通讯录列表
      */
     @Override
-    public List<Map<String, String>> getContactsByPage(ContactsType contactsType, Integer page, Integer rows) {
-        if (contactsType.getId() == 0) {
+    public List<Map<String, String>> getContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit) {
+        if (contactsType == null || contactsType.getId() == null || contactsType.getId() == 0) {
             // TODO : 得到当前租户得到ContactsType根节点
-            contactsType = contactsTypeManager.get(39L);
+            contactsType = contactsTypeManager.get(1L);
         } else {
             contactsType = contactsTypeManager.get(contactsType.getId());
         }
@@ -130,10 +133,10 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
         // 如果是叶子节点，取得该类别下的所有通讯录
         // 如果不是叶子节点，取得该类别下的所有叶子节点下的所有通讯录
         if (contactsType.getLeaf()) {
-            list = listContactsByPage(contactsType, page, rows);
+            list = listContactsByPage(contactsType, page, start, limit);
         } else {
             List<ContactsType> leaves = contactsTypeManager.getLeaves(contactsType);
-            list = listContactsByPage(leaves, page, rows);
+            list = listContactsByPage(leaves, page, start, limit);
         }
 
         List<Map<String, String>> returnList = new ArrayList<>();
@@ -161,9 +164,9 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
      */
     @Override
     public Long getContactsCount(ContactsType contactsType) {
-        if (contactsType.getId() == 0) {
+        if (contactsType == null || contactsType.getId() == null || contactsType.getId() == 0) {
             // TODO : 得到当前租户得到ContactsType根节点
-            contactsType = contactsTypeManager.get(39L);
+            contactsType = contactsTypeManager.get(1L);
         } else {
             contactsType = contactsTypeManager.get(contactsType.getId());
         }
