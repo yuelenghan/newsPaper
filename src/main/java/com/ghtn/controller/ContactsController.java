@@ -35,9 +35,12 @@ public class ContactsController extends BaseController {
 
     @RequestMapping("/addContacts")
     @ResponseBody
-    public String addContacts(Contacts contacts) throws Exception {
+    public Map<String, Object> addContacts(Contacts contacts) throws Exception {
         contactsManager.save(contacts);
-        return ConstantUtil.SUCCESS;
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", true);
+        returnMap.put("msg", "增加通讯录人员成功!");
+        return returnMap;
     }
 
     @RequestMapping("/updateContacts")
