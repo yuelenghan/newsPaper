@@ -1,5 +1,7 @@
 package com.ghtn.util;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.POIXMLDocument;
 import org.apache.poi.POIXMLTextExtractor;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -15,10 +17,13 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.apache.poi.xwpf.extractor.XWPFWordExtractor;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +33,14 @@ import java.util.List;
  */
 public class FileUtil {
 
+    private static Log log = LogFactory.getLog(FileUtil.class);
+
+    /**
+     * 得到文件扩展名
+     *
+     * @param fileName 文件全名
+     * @return
+     */
     public static String getFileExtension(String fileName) {
         if (!StringUtil.isNullStr(fileName)) {
             fileName = fileName.trim();
@@ -414,5 +427,70 @@ public class FileUtil {
         File file = new File(fileName);
         return file.exists();
     }
+
+    /**
+     * spring mvc 上传文件
+     *
+     * @param file 需要上传的文件
+     * @return 在服务器硬盘上保存的文件名
+     */
+    public static String uploadFile(CommonsMultipartFile file) {
+        if (!file.isEmpty()) {
+            // 文件扩展名
+            String fileExtension = FileUtil.getFileExtension(file.getOriginalFilename());
+            // 上传到服务器上保存的文件名
+            String newFileName = Calendar.getInstance().getTimeInMillis() + "." + fileExtension;
+            // 文件在服务器硬盘上的全路径
+            String path = ConstantUtil.UPLOAD_TEMP_PATH + "/" + newFileName;
+            File localFile = new File(path);
+            try {
+                file.transferTo(localFile);
+                return newFileName;
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+                return "状态错误!";
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "读写错误!";
+            }
+        } else {
+            return "文件为空！";
+        }
+    }
+
+    /**
+     * 下载文件
+     *
+     * @param fileName 文件名
+     * @param response HttpServletResponse对象
+     * @return 下载结果
+     */
+    public static String downloadFile(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
+        // log.debug(ConstantUtil.CONTACTS_TEMPLATE_PATH);
+        response.reset();
+        response.setContentType("application/octet-stream; charset=utf-8");
+        response.setHeader("Content-Disposition",
+                "attachment;fileName=" + new String(fileName.getBytes("gb2312"), "iso8859-1"));
+
+        // TODO : 发布到正式服务器需要修改文件路径
+        File file = new File(ConstantUtil.UPLOAD_TEMP_PATH + "/" + fileName);
+
+        try (InputStream is = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] b = new byte[1024];
+            int length;
+            while ((length = is.read(b)) > 0) {
+                os.write(b, 0, length);
+            }
+            return ConstantUtil.SUCCESS;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return "文件没有找到！";
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "输入输出错误！";
+        }
+    }
+
 }
 

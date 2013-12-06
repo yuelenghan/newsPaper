@@ -3,7 +3,7 @@
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-    <display-name>ssh_base</display-name>
+    <display-name>newsPaper</display-name>
 
     <!--指定spring配置文件，所有spring的filter和servlet共享此配置-->
     <!--由于DispatcherServlet的load-on-startup为1，所以此配置对它无效-->

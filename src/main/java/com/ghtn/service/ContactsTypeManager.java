@@ -15,7 +15,7 @@ public interface ContactsTypeManager extends GenericManager<ContactsType, Long> 
 
     ContactsTypeVO getContactsTypeTree(Tenant tenant);
 
-    void addChild(ContactsTypeVO contactsTypeVO);
+    String addChild(ContactsTypeVO contactsTypeVO);
 
     List<ContactsType> getLeaves(ContactsType contactsType);
 

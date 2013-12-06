@@ -4,13 +4,17 @@ import com.ghtn.model.Contacts;
 import com.ghtn.model.ContactsType;
 import com.ghtn.service.ContactsManager;
 import com.ghtn.util.ConstantUtil;
+import com.ghtn.util.FileUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +70,18 @@ public class ContactsController extends BaseController {
         returnMap.put("success", true);
         returnMap.put("total", totalCount);
         returnMap.put("items", list);
+        return returnMap;
+    }
+
+    @RequestMapping("/uploadFile")
+    @ResponseBody
+    public Map<String, Object> uploadFile(@RequestParam("file") CommonsMultipartFile file, HttpSession session)
+            throws Exception {
+        String fileName = FileUtil.uploadFile(file);
+        session.setAttribute("fileName", fileName);
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", true);
+        returnMap.put("msg", "上传数据文件成功!");
         return returnMap;
     }
 

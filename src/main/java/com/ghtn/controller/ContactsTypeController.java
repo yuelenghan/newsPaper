@@ -50,7 +50,6 @@ public class ContactsTypeController extends BaseController {
     @RequestMapping("/addChild")
     @ResponseBody
     public String addChild(ContactsTypeVO contactsTypeVO) throws Exception {
-        contactsTypeManager.addChild(contactsTypeVO);
-        return ConstantUtil.SUCCESS;
+        return contactsTypeManager.addChild(contactsTypeVO);
     }
 }

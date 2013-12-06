@@ -16,6 +16,7 @@ public class ConstantUtil {
     public static String UPLOAD_TEMP_PATH;
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
+    public static final String EXISTS = "exists";
 
     static {
         InputStream in = ConstantUtil.class.getResourceAsStream("/constant.properties");
