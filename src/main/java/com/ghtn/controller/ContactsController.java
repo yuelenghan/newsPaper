@@ -87,8 +87,9 @@ public class ContactsController extends BaseController {
 
     @RequestMapping("/batchImportContacts")
     @ResponseBody
-    public String batchImportContacts(String fileName, ContactsType contactsType) throws Exception {
-        contactsManager.batchImportContacts(null, contactsType, ConstantUtil.UPLOAD_TEMP_PATH + "/" + fileName);
+    public String batchImportContacts(ContactsType contactsType, HttpSession session) throws Exception {
+        contactsManager.batchImportContacts(null, contactsType,
+                ConstantUtil.UPLOAD_TEMP_PATH + "/" + session.getAttribute("fileName"));
         return ConstantUtil.SUCCESS;
     }
 

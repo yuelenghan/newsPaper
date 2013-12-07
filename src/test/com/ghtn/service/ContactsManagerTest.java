@@ -36,7 +36,7 @@ public class ContactsManagerTest extends BaseTestCase {
 
     @Test
     public void testBatchImportContacts() throws Exception {
-        contactsManager.batchImportContacts(null, contactsTypeManager.get(73L), "d:/temp/通讯录模板.xls");
+        contactsManager.batchImportContacts(null, contactsTypeManager.get(6L), "d:/temp/通讯录模板.xls");
     }
 
     @Test
