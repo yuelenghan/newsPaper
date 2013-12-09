@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
@@ -93,4 +94,9 @@ public class ContactsController extends BaseController {
         return ConstantUtil.SUCCESS;
     }
 
+    @RequestMapping("/downloadTemplate")
+    @ResponseBody
+    public String downloadTemplate(String fileName, HttpServletResponse response) throws Exception {
+        return FileUtil.downloadFile(fileName, response);
+    }
 }
