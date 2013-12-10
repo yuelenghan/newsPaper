@@ -8,7 +8,7 @@ package com.ghtn.vo;
 public class MaterialTypeVO {
     private Long id;
     private String text;
-    private String state;
+    private Boolean leaf;
 
     public Long getId() {
         return id;
@@ -26,11 +26,12 @@ public class MaterialTypeVO {
         this.text = text;
     }
 
-    public String getState() {
-        return state;
+    public Boolean getLeaf() {
+        return leaf;
     }
 
-    public void setState(String state) {
-        this.state = state;
+    public void setLeaf(Boolean leaf) {
+        this.leaf = leaf;
     }
+
 }

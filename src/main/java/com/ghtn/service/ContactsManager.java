@@ -27,34 +27,31 @@ public interface ContactsManager extends GenericManager<Contacts, Long> {
      * 根据通讯录类别得到通讯录列表
      *
      * @param contactsType 通讯录类别
-     * @param page         当前页码
      * @param start        起始行
      * @param limit        最大行数
      * @return 通讯录列表
      */
-    List<Contacts> listContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit);
+    List<Contacts> listContactsByPage(ContactsType contactsType, Integer start, Integer limit);
 
     /**
      * 根据通讯录类别(集合)得到通讯录列表
      *
      * @param contactsTypeList 通讯录类别集合
-     * @param page             当前页码
      * @param start            起始行
      * @param limit            最大行数
      * @return 通讯录列表
      */
-    List<Contacts> listContactsByPage(List<ContactsType> contactsTypeList, Integer page, Integer start, Integer limit);
+    List<Contacts> listContactsByPage(List<ContactsType> contactsTypeList, Integer start, Integer limit);
 
     /**
      * 根据通讯录类别得到通讯录列表
      *
      * @param contactsType 通讯录类别
-     * @param page         当前页码
      * @param start        起始行
      * @param limit        最大行数
      * @return 通讯录列表
      */
-    List<Map<String, String>> getContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit);
+    List<Map<String, String>> getContactsByPage(ContactsType contactsType, Integer start, Integer limit);
 
     /**
      * 根据通讯录类别得到通讯录条数

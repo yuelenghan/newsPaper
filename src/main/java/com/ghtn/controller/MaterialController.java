@@ -3,7 +3,6 @@ package com.ghtn.controller;
 import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
 import com.ghtn.service.MaterialManager;
-import com.ghtn.util.ConstantUtil;
 import com.ghtn.vo.MaterialVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,26 +31,27 @@ public class MaterialController extends BaseController {
 
     @RequestMapping("/addMaterial")
     @ResponseBody
-    public String addMaterial(Material material) throws Exception {
+    public Map<String, Object> addMaterial(Material material) throws Exception {
         materialManager.save(material);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/removeMaterial")
     @ResponseBody
-    public String removeMaterial(Material material) throws Exception {
-        materialManager.remove(material);
-        return ConstantUtil.SUCCESS;
+    public Map<String, Object> removeMaterial(Material material) throws Exception {
+        materialManager.remove(material.getId());
+        return operationSuccess();
     }
 
     @RequestMapping("/getMaterialByPage")
     @ResponseBody
-    public Map<String, Object> getMaterialByPage(MaterialType materialType, String type, Integer page, Integer rows) {
+    public Map<String, Object> getMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit) {
         Map<String, Object> returnMap = new HashMap<>();
-        List<MaterialVO> list = materialManager.getMaterialByPage(materialType, type, page, rows);
+        List<MaterialVO> list = materialManager.getMaterialByPage(materialType, type, start, limit);
         Long totalCount = materialManager.getMaterialCount(materialType, type);
+        returnMap.put("success", true);
         returnMap.put("total", totalCount);
-        returnMap.put("rows", list);
+        returnMap.put("items", list);
         return returnMap;
     }
 
@@ -63,8 +63,8 @@ public class MaterialController extends BaseController {
 
     @RequestMapping("/updateMaterial")
     @ResponseBody
-    public String updateMaterial(Material material) {
+    public Map<String, Object> updateMaterial(Material material) throws Exception {
         materialManager.updateMaterial(material);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 }

@@ -1,10 +1,12 @@
 package com.ghtn.controller;
 
-import com.ghtn.util.ConstantUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 处理异常信息
@@ -18,11 +20,23 @@ public class BaseController {
 
     @ExceptionHandler
     @ResponseBody
-    public String handleException(Exception e) {
+    public Map<String, Object> handleException(Exception e) {
         log.error("------------发生异常！----------------");
         log.error("Caused by : " + e.getCause());
         log.error("Message : " + e.getMessage());
         log.error("Exception : ", e);
-        return ConstantUtil.ERROR;
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", false);
+        returnMap.put("msg", "操作失败!");
+        returnMap.put("exception", e);
+        return returnMap;
     }
+
+    public Map<String, Object> operationSuccess() {
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", true);
+        returnMap.put("msg", "操作成功!");
+        return returnMap;
+    }
+
 }

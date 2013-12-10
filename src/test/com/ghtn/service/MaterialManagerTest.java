@@ -2,7 +2,6 @@ package com.ghtn.service;
 
 import com.ghtn.BaseTestCase;
 import com.ghtn.model.Material;
-import com.ghtn.model.MaterialType;
 import org.junit.Test;
 
 import javax.annotation.Resource;
@@ -23,21 +22,23 @@ public class MaterialManagerTest extends BaseTestCase {
 
     @Test
     public void testSave() throws Exception {
-        Material material = new Material();
-        material.setTitle("安全生产图片");
-        material.setType("图片");
-        //  material.setText("一定要安全生产！");
-        material.setImage("/shengchan_image");
+        /*MaterialType materialType = new MaterialType();
+        materialType.setId(2L);*/
 
-        Material parent = new Material();
-        parent.setId(4L);
-        material.setParent(parent);
+        for (int i = 0; i < 2; i++) {
+            Material material = new Material();
+            material.setTitle("安全生产图片" + (i + 1));
+            material.setType("图片");
+//            material.setText("节日快乐！" + (i + 1));
+            material.setImage("/shengchan_image");
 
-        MaterialType materialType = new MaterialType();
-        materialType.setId(2L);
+            Material parent = materialManager.get(3L);
+            material.setParent(parent);
+            material.setMaterialType(parent.getMaterialType());
 
-        material.setMaterialType(materialType);
+            // material.setMaterialType(materialType);
 
-        materialManager.save(material);
+            materialManager.save(material);
+        }
     }
 }

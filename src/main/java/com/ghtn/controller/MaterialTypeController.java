@@ -2,7 +2,6 @@ package com.ghtn.controller;
 
 import com.ghtn.model.MaterialType;
 import com.ghtn.service.MaterialTypeManager;
-import com.ghtn.util.ConstantUtil;
 import com.ghtn.vo.MaterialTypeVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -29,23 +29,24 @@ public class MaterialTypeController extends BaseController {
 
     @RequestMapping("/addMaterialType")
     @ResponseBody
-    public String addMaterialType(MaterialType materialType) throws Exception {
+    public Map<String, Object> addMaterialType(MaterialType materialType) throws Exception {
+        // TODO : 从session中获取租户信息并保存
         materialTypeManager.save(materialType);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/removeMaterialType")
     @ResponseBody
-    public String removeMaterialType(MaterialType materialType) throws Exception {
-        materialTypeManager.remove(materialType);
-        return ConstantUtil.SUCCESS;
+    public Map<String, Object> removeMaterialType(MaterialType materialType) throws Exception {
+        materialTypeManager.remove(materialType.getId());
+        return operationSuccess();
     }
 
     @RequestMapping("/updateMaterialType")
     @ResponseBody
-    public String updateMaterialType(MaterialType materialType) throws Exception {
+    public Map<String, Object> updateMaterialType(MaterialType materialType) throws Exception {
         materialTypeManager.update(materialType);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/listMaterialType")

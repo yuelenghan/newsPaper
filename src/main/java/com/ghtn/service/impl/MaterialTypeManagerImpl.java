@@ -36,7 +36,7 @@ public class MaterialTypeManagerImpl extends GenericManagerImpl<MaterialType, Lo
                 MaterialTypeVO materialTypeVO = new MaterialTypeVO();
                 materialTypeVO.setId(materialType.getId());
                 materialTypeVO.setText(materialType.getName());
-                materialTypeVO.setState("open");
+                materialTypeVO.setLeaf(true);
 
                 returnList.add(materialTypeVO);
             }

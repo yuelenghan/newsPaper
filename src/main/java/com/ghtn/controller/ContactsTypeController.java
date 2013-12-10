@@ -2,13 +2,13 @@ package com.ghtn.controller;
 
 import com.ghtn.model.ContactsType;
 import com.ghtn.service.ContactsTypeManager;
-import com.ghtn.util.ConstantUtil;
 import com.ghtn.vo.ContactsTypeVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -28,16 +28,16 @@ public class ContactsTypeController extends BaseController {
 
     @RequestMapping("/updateContactsType")
     @ResponseBody
-    public String updateContactsType(ContactsType contactsType) throws Exception {
+    public Map<String, Object> updateContactsType(ContactsType contactsType) throws Exception {
         contactsTypeManager.updateContactsType(contactsType);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/removeContactsType")
     @ResponseBody
-    public String removeContactsType(ContactsType contactsType) throws Exception {
+    public Map<String, Object> removeContactsType(ContactsType contactsType) throws Exception {
         contactsTypeManager.removeContactsType(contactsType);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/getContactsTypeTree")
@@ -49,7 +49,7 @@ public class ContactsTypeController extends BaseController {
 
     @RequestMapping("/addChild")
     @ResponseBody
-    public String addChild(ContactsTypeVO contactsTypeVO) throws Exception {
+    public Map<String, Object> addChild(ContactsTypeVO contactsTypeVO) throws Exception {
         return contactsTypeManager.addChild(contactsTypeVO);
     }
 }

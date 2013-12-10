@@ -42,31 +42,28 @@ public class ContactsController extends BaseController {
     @ResponseBody
     public Map<String, Object> addContacts(Contacts contacts) throws Exception {
         contactsManager.save(contacts);
-        Map<String, Object> returnMap = new HashMap<>();
-        returnMap.put("success", true);
-        returnMap.put("msg", "增加通讯录人员成功!");
-        return returnMap;
+        return operationSuccess();
     }
 
     @RequestMapping("/updateContacts")
     @ResponseBody
-    public String updateContacts(Contacts contacts) throws Exception {
+    public Map<String, Object> updateContacts(Contacts contacts) throws Exception {
         contactsManager.updateContacts(contacts);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/removeContacts")
     @ResponseBody
-    public String removeContacts(Contacts contacts) throws Exception {
+    public Map<String, Object> removeContacts(Contacts contacts) throws Exception {
         contactsManager.remove(contacts);
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/getContactsByPage")
     @ResponseBody
-    public Map<String, Object> getContactsByPage(ContactsType contactsType, Integer page, Integer start, Integer limit) throws Exception {
+    public Map<String, Object> getContactsByPage(ContactsType contactsType, Integer start, Integer limit) throws Exception {
         Map<String, Object> returnMap = new HashMap<>();
-        List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, page, start, limit);
+        List<Map<String, String>> list = contactsManager.getContactsByPage(contactsType, start, limit);
         Long totalCount = contactsManager.getContactsCount(contactsType);
         returnMap.put("success", true);
         returnMap.put("total", totalCount);
@@ -80,18 +77,15 @@ public class ContactsController extends BaseController {
             throws Exception {
         String fileName = FileUtil.uploadFile(file);
         session.setAttribute("fileName", fileName);
-        Map<String, Object> returnMap = new HashMap<>();
-        returnMap.put("success", true);
-        returnMap.put("msg", "上传数据文件成功!");
-        return returnMap;
+        return operationSuccess();
     }
 
     @RequestMapping("/batchImportContacts")
     @ResponseBody
-    public String batchImportContacts(ContactsType contactsType, HttpSession session) throws Exception {
+    public Map<String, Object> batchImportContacts(ContactsType contactsType, HttpSession session) throws Exception {
         contactsManager.batchImportContacts(null, contactsType,
                 ConstantUtil.UPLOAD_TEMP_PATH + "/" + session.getAttribute("fileName"));
-        return ConstantUtil.SUCCESS;
+        return operationSuccess();
     }
 
     @RequestMapping("/downloadTemplate")

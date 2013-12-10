@@ -5,6 +5,7 @@ import com.ghtn.model.Tenant;
 import com.ghtn.vo.ContactsTypeVO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -15,7 +16,7 @@ public interface ContactsTypeManager extends GenericManager<ContactsType, Long> 
 
     ContactsTypeVO getContactsTypeTree(Tenant tenant);
 
-    String addChild(ContactsTypeVO contactsTypeVO);
+    Map<String, Object> addChild(ContactsTypeVO contactsTypeVO);
 
     List<ContactsType> getLeaves(ContactsType contactsType);
 

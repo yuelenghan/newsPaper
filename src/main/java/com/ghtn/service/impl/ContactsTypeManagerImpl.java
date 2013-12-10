@@ -4,7 +4,6 @@ import com.ghtn.dao.ContactsTypeDao;
 import com.ghtn.model.ContactsType;
 import com.ghtn.model.Tenant;
 import com.ghtn.service.ContactsTypeManager;
-import com.ghtn.util.ConstantUtil;
 import com.ghtn.vo.ContactsTypeVO;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -12,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * User: Administrator
@@ -87,7 +88,7 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
     }
 
     @Override
-    public String addChild(ContactsTypeVO contactsTypeVO) {
+    public Map<String, Object> addChild(ContactsTypeVO contactsTypeVO) {
         ContactsType parent;
         if (contactsTypeVO.getId() == -1) {
             // 在根节点下添加
@@ -97,9 +98,13 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
             parent = get(contactsTypeVO.getId());
         }
 
+        Map<String, Object> returnMap = new HashMap<>();
+
         // 如果所选的通讯录类别下边存在通讯录人员,则不允许添加子节点
         if (parent.getContactsSet() != null && parent.getContactsSet().size() > 0) {
-            return ConstantUtil.EXISTS;
+            returnMap.put("success", false);
+            returnMap.put("msg", "此通讯录类别下存在通讯录人员!");
+            return returnMap;
         }
 
         ContactsType child = new ContactsType();
@@ -118,7 +123,10 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
 
         parent.setLeaf(false);
         save(parent);
-        return ConstantUtil.SUCCESS;
+
+        returnMap.put("success", true);
+        returnMap.put("msg", "添加通讯录类别成功!");
+        return returnMap;
     }
 
     @Override

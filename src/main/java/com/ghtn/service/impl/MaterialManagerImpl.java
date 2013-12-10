@@ -43,18 +43,16 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
      *
      * @param materialType 素材类别
      * @param type         素材类型（文本或图片）
-     * @param page         当前页
-     * @param rows         当前页最大行数
+     * @param start        起始行
+     * @param limit        一页最大多少行
      * @return 素材列表
      */
     @Override
-    public List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer page, Integer rows) {
-        Integer start = (page - 1) * rows;
-        Integer limit = rows;
+    public List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit) {
         List<Material> list;
         List<MaterialVO> returnList = new ArrayList<>();
 
-        if (materialType.getId() == 0) {
+        if (materialType == null || materialType.getId() == null || materialType.getId() == 0) {
             // TODO : 得到当前租户下的所有MaterialType
             List<MaterialType> materialTypeList = materialTypeManager.getAll();
             if (!StringUtil.isNullStr(type)) {
@@ -87,7 +85,7 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
      */
     @Override
     public Long getMaterialCount(MaterialType materialType, String type) {
-        if (materialType.getId() == 0) {
+        if (materialType == null || materialType.getId() == null || materialType.getId() == 0) {
             // TODO : 得到当前租户下的所有MaterialType
             List<MaterialType> materialTypeList = materialTypeManager.getAll();
             if (!StringUtil.isNullStr(type)) {

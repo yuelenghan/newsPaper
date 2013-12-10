@@ -17,11 +17,11 @@ public interface MaterialManager extends GenericManager<Material, Long> {
      *
      * @param materialType 素材类别
      * @param type         素材类型（文本或图片）
-     * @param page         当前页
-     * @param rows         当前页最大行数
+     * @param start        起始行
+     * @param limit        一页最大多少行
      * @return 素材列表
      */
-    List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer page, Integer rows);
+    List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit);
 
     /**
      * 根据素材类别和素材类型得到素材记录数
