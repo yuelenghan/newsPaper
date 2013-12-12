@@ -14,9 +14,9 @@ import java.util.Properties;
 public class ConstantUtil {
     public static String INDEX_BASE;
     public static String UPLOAD_TEMP_PATH;
+    public static String IMAGE_ROOT_PATH;
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
-    public static final String EXISTS = "exists";
 
     static {
         InputStream in = ConstantUtil.class.getResourceAsStream("/constant.properties");
@@ -25,6 +25,7 @@ public class ConstantUtil {
             prop.load(in);
             INDEX_BASE = prop.getProperty("hibernate.search.default.indexBase").trim();
             UPLOAD_TEMP_PATH = prop.getProperty("upload.temp.path").trim();
+            IMAGE_ROOT_PATH = prop.getProperty("image.root.path").trim();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

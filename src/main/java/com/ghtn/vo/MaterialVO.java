@@ -12,6 +12,10 @@ public class MaterialVO {
     private String text;
     private String image;
     private String[] tags;
+    private String parentTitle;
+    private String childTitle;
+    private String childPath;
+    private Integer childCount;
 
     public Long getId() {
         return id;
@@ -59,5 +63,37 @@ public class MaterialVO {
 
     public void setTags(String[] tags) {
         this.tags = tags;
+    }
+
+    public String getParentTitle() {
+        return parentTitle;
+    }
+
+    public void setParentTitle(String parentTitle) {
+        this.parentTitle = parentTitle;
+    }
+
+    public String getChildTitle() {
+        return childTitle;
+    }
+
+    public void setChildTitle(String childTitle) {
+        this.childTitle = childTitle;
+    }
+
+    public String getChildPath() {
+        return childPath;
+    }
+
+    public void setChildPath(String childPath) {
+        this.childPath = childPath;
+    }
+
+    public Integer getChildCount() {
+        return childCount;
+    }
+
+    public void setChildCount(Integer childCount) {
+        this.childCount = childCount;
     }
 }

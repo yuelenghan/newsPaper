@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,6 +75,9 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
                 contactsDao.save(contacts);
             }
         }
+
+        // 删除临时数据文件
+        FileUtil.deleteFile(new File(fileName));
     }
 
     /**

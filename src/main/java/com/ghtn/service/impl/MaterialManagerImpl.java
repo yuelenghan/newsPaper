@@ -6,14 +6,19 @@ import com.ghtn.model.MaterialType;
 import com.ghtn.model.Tag;
 import com.ghtn.service.MaterialManager;
 import com.ghtn.service.MaterialTypeManager;
+import com.ghtn.util.ConstantUtil;
+import com.ghtn.util.FileUtil;
 import com.ghtn.util.StringUtil;
 import com.ghtn.vo.MaterialVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * User: Administrator
@@ -120,6 +125,26 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
             }
             materialVO.setTags(tags);
         }
+
+        if (material.getType().trim().equals("图片")) {
+            Material parent = material.getParent();
+            if (parent != null) {
+                materialVO.setParentTitle(parent.getTitle());
+            }
+        }
+
+        if (material.getType().trim().equals("文本")) {
+            Set<Material> childSet = material.getChild();
+            if (childSet != null && childSet.size() > 0) {
+                for (Material child : childSet) {
+                    materialVO.setChildTitle(child.getTitle());
+                    materialVO.setChildPath(child.getImage());
+                }
+
+                materialVO.setChildCount(childSet.size());
+            }
+        }
+
         return materialVO;
     }
 
@@ -136,5 +161,48 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         old.setImage(material.getImage());
         old.setTagList(material.getTagList());
         return save(old);
+    }
+
+    @Override
+    public void addMaterialImage(Material material, HttpSession session) {
+        String imageName = session.getAttribute("imageName").toString();
+
+        String srcPath = ConstantUtil.UPLOAD_TEMP_PATH + "/" + imageName;
+        log.debug("srcPath : " + srcPath);
+
+        // TODO : 取得租户id
+        // 把临时文件夹temp中的图片复制到  images/租户id/素材类别id/文本素材id
+        String path = "001" + "/" + material.getMaterialType().getId()
+                + "/" + material.getParent().getId() + "/" + imageName;
+        String destPath = ConstantUtil.IMAGE_ROOT_PATH + "/" + path;
+        log.debug("destPath : " + destPath);
+
+        FileUtil.copyFile(srcPath, destPath, true);
+
+        // 在数据库中插入记录
+        material.setImage(path);
+        save(material);
+
+        // 删除临时图片
+        FileUtil.deleteFile(new File(srcPath));
+
+    }
+
+    @Override
+    public void removeMaterialImage(Material material) {
+        material = get(material.getId());
+
+        Material parent = material.getParent();
+        Set<Material> children = parent.getChild();
+
+        // 删除数据库中的记录
+        children.remove(material);
+        remove(material);
+
+        // 删除对应的图片
+        String imagePath = ConstantUtil.IMAGE_ROOT_PATH + "/" + material.getImage();
+        if (new File(imagePath).exists()) {
+            FileUtil.deleteFile(new File(imagePath));
+        }
     }
 }

@@ -398,7 +398,8 @@
         <timeToLiveSeconds>100000</timeToLiveSeconds>
         <diskPersistent>false</diskPersistent>
 
-        <upload.temp.path>d:/temp</upload.temp.path>
+        <upload.temp.path>../webapps/${project.name}/temp</upload.temp.path>
+        <image.root.path>../webapps/images</image.root.path>
 
         <encoding>utf-8</encoding>
     </properties>

@@ -3,12 +3,16 @@ package com.ghtn.controller;
 import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
 import com.ghtn.service.MaterialManager;
+import com.ghtn.util.FileUtil;
 import com.ghtn.vo.MaterialVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,16 +33,16 @@ public class MaterialController extends BaseController {
         this.materialManager = materialManager;
     }
 
-    @RequestMapping("/addMaterial")
+    @RequestMapping("/addMaterialText")
     @ResponseBody
-    public Map<String, Object> addMaterial(Material material) throws Exception {
+    public Map<String, Object> addMaterialText(Material material) throws Exception {
         materialManager.save(material);
         return operationSuccess();
     }
 
-    @RequestMapping("/removeMaterial")
+    @RequestMapping("/removeMaterialText")
     @ResponseBody
-    public Map<String, Object> removeMaterial(Material material) throws Exception {
+    public Map<String, Object> removeMaterialText(Material material) throws Exception {
         materialManager.remove(material.getId());
         return operationSuccess();
     }
@@ -61,10 +65,37 @@ public class MaterialController extends BaseController {
         return materialManager.getMaterial(material);
     }
 
-    @RequestMapping("/updateMaterial")
+    @RequestMapping("/updateMaterialText")
     @ResponseBody
-    public Map<String, Object> updateMaterial(Material material) throws Exception {
+    public Map<String, Object> updateMaterialText(Material material) throws Exception {
         materialManager.updateMaterial(material);
+        return operationSuccess();
+    }
+
+    @RequestMapping("/uploadImage")
+    @ResponseBody
+    public Map<String, Object> uploadImage(@RequestParam("imageFile") CommonsMultipartFile imageFile, HttpSession session)
+            throws Exception {
+        String imageName = FileUtil.uploadFile(imageFile);
+        session.setAttribute("imageName", imageName);
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", true);
+        returnMap.put("msg", "上传成功!");
+        returnMap.put("imagePath", "/newsPaper/temp/" + imageName);
+        return returnMap;
+    }
+
+    @RequestMapping("/addMaterialImage")
+    @ResponseBody
+    public Map<String, Object> addMaterialImage(Material material, HttpSession session) throws Exception {
+        materialManager.addMaterialImage(material, session);
+        return operationSuccess();
+    }
+
+    @RequestMapping("/removeMaterialImage")
+    @ResponseBody
+    public Map<String, Object> removeMaterialImage(Material material) throws Exception {
+        materialManager.removeMaterialImage(material);
         return operationSuccess();
     }
 }

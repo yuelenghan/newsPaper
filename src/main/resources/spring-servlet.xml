@@ -23,6 +23,7 @@
 
     <!--放过/scripts下的静态文件-->
     <mvc:resources mapping="/scripts/**" location="/scripts/"/>
+    <mvc:resources mapping="/temp/**" location="/temp/"/>
 
     <!-- 日志拦截器 -->
     <mvc:interceptors>

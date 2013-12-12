@@ -19,9 +19,15 @@ public class MethodEfficiencyUtil {
 
         long end = System.currentTimeMillis();
 
-        log.debug("=======执行[" + joinPoint.getTarget().getClass() + "]类的["
+        log.debug("执行[" + joinPoint.getTarget().getClass() + "]类的["
                 + joinPoint.getSignature().getName() + "]方法用时"
-                + (end - start) + "ms=======");
+                + (end - start) + "ms");
+
+        // 如果一个方法执行时间超过10秒
+        if (end - start > 10000) {
+            log.warn("执行[" + joinPoint.getTarget().getClass() + "]类的["
+                    + joinPoint.getSignature().getName() + "]方法耗时超过10秒!!!!!!!!!!!!!!!!");
+        }
 
         return returnValue;
 

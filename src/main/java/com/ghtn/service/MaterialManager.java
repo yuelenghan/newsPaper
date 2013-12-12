@@ -4,6 +4,7 @@ import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
 import com.ghtn.vo.MaterialVO;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 /**
@@ -37,4 +38,8 @@ public interface MaterialManager extends GenericManager<Material, Long> {
     MaterialVO transformToVO(Material material);
 
     Material updateMaterial(Material material);
+
+    void addMaterialImage(Material material, HttpSession session);
+
+    void removeMaterialImage(Material material);
 }
