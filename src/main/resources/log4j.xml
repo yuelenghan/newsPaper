@@ -9,28 +9,40 @@
         </layout>
     </appender>
 
-    <logger name="net.sf.ehcache">
-        <level value="ERROR"/>
-    </logger>
-
-    <logger name="com.ghtn">
-        <level value="DEBUG"/>
-    </logger>
-
-    <logger name="org.springframework.web.context.ContextLoader">
-        <level value="debug"/>
+    <logger name="org.hibernate">
+        <level value="error"/>
     </logger>
 
     <logger name="org.hibernate.transaction">
-        <level value="debug"/>
+        <level value="error"/>
+    </logger>
+
+    <logger name="org.hibernate.SQL">
+        <level value="error"/>
+    </logger>
+
+    <logger name="net.sf.ehcache">
+        <level value="error"/>
+    </logger>
+
+    <logger name="org.springframework">
+        <level value="error"/>
+    </logger>
+
+    <logger name="org.springframework.web.context.ContextLoader">
+        <level value="error"/>
     </logger>
 
     <logger name="org.springframework.test.context">
-        <level value="debug"/>
+        <level value="error"/>
+    </logger>
+
+    <logger name="com.ghtn">
+        <level value="info"/>
     </logger>
 
     <root>
-        <level value="INFO"/>
+        <level value="error"/>
         <appender-ref ref="CONSOLE"/>
     </root>
 

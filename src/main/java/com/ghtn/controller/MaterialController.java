@@ -36,14 +36,18 @@ public class MaterialController extends BaseController {
     @RequestMapping("/addMaterialText")
     @ResponseBody
     public Map<String, Object> addMaterialText(Material material) throws Exception {
-        materialManager.save(material);
+        try {
+            materialManager.save(material);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return operationSuccess();
     }
 
-    @RequestMapping("/removeMaterialText")
+    @RequestMapping("/removeMaterial")
     @ResponseBody
-    public Map<String, Object> removeMaterialText(Material material) throws Exception {
-        materialManager.remove(material.getId());
+    public Map<String, Object> removeMaterial(Material material) throws Exception {
+        materialManager.removeMaterial(material);
         return operationSuccess();
     }
 
@@ -72,12 +76,27 @@ public class MaterialController extends BaseController {
         return operationSuccess();
     }
 
-    @RequestMapping("/uploadImage")
+    @RequestMapping("/uploadImageAdd")
     @ResponseBody
-    public Map<String, Object> uploadImage(@RequestParam("imageFile") CommonsMultipartFile imageFile, HttpSession session)
+    public Map<String, Object> uploadImageAdd(@RequestParam("imageFile") CommonsMultipartFile imageFile, HttpSession session)
+    throws Exception {
+        String imageName = FileUtil.uploadFile(imageFile);
+        session.setAttribute("imageName0", imageName);
+
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("success", true);
+        returnMap.put("msg", "上传成功!");
+        returnMap.put("imagePath", "/newsPaper/temp/" + imageName);
+        return returnMap;
+    }
+
+    @RequestMapping("/uploadImageEdit")
+    @ResponseBody
+    public Map<String, Object> uploadImageEdit(@RequestParam("imageFile") CommonsMultipartFile imageFile, HttpSession session, Long id)
             throws Exception {
         String imageName = FileUtil.uploadFile(imageFile);
-        session.setAttribute("imageName", imageName);
+        session.setAttribute("imageName" + id, imageName);
+
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("success", true);
         returnMap.put("msg", "上传成功!");
@@ -92,10 +111,11 @@ public class MaterialController extends BaseController {
         return operationSuccess();
     }
 
-    @RequestMapping("/removeMaterialImage")
+    @RequestMapping("/updateMaterialImage")
     @ResponseBody
-    public Map<String, Object> removeMaterialImage(Material material) throws Exception {
-        materialManager.removeMaterialImage(material);
+    public Map<String, Object> updateMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
+        materialManager.updateMaterialImage(materialVO, session);
         return operationSuccess();
     }
+
 }

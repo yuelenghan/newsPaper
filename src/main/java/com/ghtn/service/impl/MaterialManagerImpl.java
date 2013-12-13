@@ -18,7 +18,6 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * User: Administrator
@@ -108,14 +107,13 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
 
     }
 
-    @Override
-    public MaterialVO transformToVO(Material material) {
+    private MaterialVO transformToVO(Material material) {
         MaterialVO materialVO = new MaterialVO();
         materialVO.setId(material.getId());
         materialVO.setType(material.getType());
         materialVO.setTitle(material.getTitle());
         materialVO.setText(material.getText());
-        materialVO.setImage(material.getImage());
+        materialVO.setImage("/images/" + material.getImage());
 
         List<Tag> tagList = material.getTagList();
         if (tagList != null && tagList.size() > 0) {
@@ -129,19 +127,26 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         if (material.getType().trim().equals("图片")) {
             Material parent = material.getParent();
             if (parent != null) {
+                materialVO.setParentId(parent.getId());
                 materialVO.setParentTitle(parent.getTitle());
             }
         }
 
         if (material.getType().trim().equals("文本")) {
-            Set<Material> childSet = material.getChild();
-            if (childSet != null && childSet.size() > 0) {
-                for (Material child : childSet) {
-                    materialVO.setChildTitle(child.getTitle());
-                    materialVO.setChildPath(child.getImage());
+            List<Material> children = material.getChildren();
+            if (children != null && children.size() > 0) {
+                String[] childTitle = new String[children.size()];
+                String[] childPath = new String[children.size()];
+
+                for (int i = 0; i < children.size(); i++) {
+                    Material child = children.get(i);
+                    childTitle[i] = child.getTitle();
+                    childPath[i] = "/images/" + child.getImage();
                 }
 
-                materialVO.setChildCount(childSet.size());
+                materialVO.setChildTitle(childTitle);
+                materialVO.setChildPath(childPath);
+                materialVO.setChildCount(children.size());
             }
         }
 
@@ -164,9 +169,131 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
     }
 
     @Override
-    public void addMaterialImage(Material material, HttpSession session) {
-        String imageName = session.getAttribute("imageName").toString();
+    public void addMaterialImage(Material material, HttpSession session) throws Exception {
+        // 从临时目录复制图片
+        log.info("新增加图片素材, 开始复制临时文件......");
+        String image = copyFromTemp(material, String.valueOf(session.getAttribute("imageName0")));
 
+        // 在数据库中插入记录
+        material.setImage(image);
+        save(material);
+    }
+
+    @Override
+    public void removeMaterialImage(Material material) {
+        Material parent = material.getParent();
+        List<Material> children = parent.getChildren();
+
+        // 删除数据库中的记录
+        children.remove(material);
+        remove(material);
+
+        // 删除对应的图片
+        deleteMaterialImage(material);
+    }
+
+    @Override
+    public void deleteMaterialImage(Material material) {
+        if (material != null && material.getType().equals("图片")) {
+            File imageFile = new File(ConstantUtil.IMAGE_ROOT_PATH + "/" + material.getImage());
+            if (imageFile.exists()) {
+                FileUtil.deleteFile(imageFile);
+            }
+        } else {
+            return;
+        }
+    }
+
+    @Override
+    public void removeMaterialText(Material material) {
+        remove(material);
+
+        // 删除属于此文本素材的图片素材文件
+        List<Material> children = material.getChildren();
+        if (children != null && children.size() > 0) {
+            for (Material child : children) {
+                deleteMaterialImage(child);
+            }
+        }
+    }
+
+    @Override
+    public void removeMaterial(Material material) {
+        material = get(material.getId());
+        if (material.getType().equals("文本")) {
+            removeMaterialText(material);
+        } else if (material.getType().equals("图片")) {
+            removeMaterialImage(material);
+        } else {
+            return;
+        }
+    }
+
+    @Override
+    public void updateMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
+        // 前端会传过来id,title,parentId
+        // 当parentId和以前不同或存在上传图片的临时文件,这时需要改变image并且复制图片文件,最后删除以前的图片
+        Material material = get(materialVO.getId());
+
+        Long oldParentId = material.getParent().getId();
+        Long newParentId = materialVO.getParentId();
+        log.info("old parent id = " + oldParentId);
+        log.info("new parent id = " + newParentId);
+
+        Material parent = new Material();
+        parent.setId(materialVO.getParentId());
+        material.setParent(parent);
+        material.setTitle(materialVO.getTitle());
+
+        String image = material.getImage();
+
+        // 如果存在临时文件, 说明修改了图片
+        String imageName = String.valueOf(session.getAttribute("imageName" + material.getId()));
+        if (StringUtil.isNullStr(imageName)) {
+            imageName = "null";
+        }
+        File tempFile = new File(ConstantUtil.UPLOAD_TEMP_PATH + "/" + imageName);
+        if (tempFile.exists() && tempFile.isFile()) {
+            log.info("存在临时文件, 开始复制并更新图片路径......");
+            image = copyFromTemp(material, imageName);
+
+            log.info("删除以前的图片......");
+            deleteMaterialImage(material);
+        } else if (oldParentId != newParentId) {
+            log.info("不存在临时文件并且parent有改变, 把图片复制到新路径下,并更新图片路径......");
+            String oldImage = material.getImage();
+            log.info("oldImage = " + oldImage);
+            // oldImage格式 : 租户id/素材类别id/父id/文件名
+            String[] s = oldImage.split("/");
+            s[2] = newParentId + "";
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < s.length; i++) {
+                sb.append(s[i] + "/");
+            }
+            sb.deleteCharAt(sb.length() - 1);
+            String newImage = sb.toString();
+            log.info("newImage = " + newImage);
+//            String oldImageName = oldImage.substring(oldImage.lastIndexOf("/") + 1, oldImage.length());
+//            log.info("oldImageName = " + oldImageName);
+            String oldImagePath = ConstantUtil.IMAGE_ROOT_PATH + "/" + oldImage;
+            String newImagePath = ConstantUtil.IMAGE_ROOT_PATH + "/" + newImage;
+            if (!FileUtil.copyFile(oldImagePath, newImagePath, true)) {
+                throw new Exception("复制文件失败!!");
+            }
+
+            // 删除以前的图片
+            log.info("删除以前的图片......");
+            FileUtil.deleteFile(new File(oldImagePath));
+
+            image = newImage;
+        }
+
+        material.setImage(image);
+
+        save(material);
+    }
+
+    private String copyFromTemp(Material material, String imageName) throws Exception {
         String srcPath = ConstantUtil.UPLOAD_TEMP_PATH + "/" + imageName;
         log.debug("srcPath : " + srcPath);
 
@@ -177,32 +304,13 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         String destPath = ConstantUtil.IMAGE_ROOT_PATH + "/" + path;
         log.debug("destPath : " + destPath);
 
-        FileUtil.copyFile(srcPath, destPath, true);
-
-        // 在数据库中插入记录
-        material.setImage(path);
-        save(material);
+        if (!FileUtil.copyFile(srcPath, destPath, true)) {
+            throw new Exception("复制文件失败!!");
+        }
 
         // 删除临时图片
         FileUtil.deleteFile(new File(srcPath));
 
-    }
-
-    @Override
-    public void removeMaterialImage(Material material) {
-        material = get(material.getId());
-
-        Material parent = material.getParent();
-        Set<Material> children = parent.getChild();
-
-        // 删除数据库中的记录
-        children.remove(material);
-        remove(material);
-
-        // 删除对应的图片
-        String imagePath = ConstantUtil.IMAGE_ROOT_PATH + "/" + material.getImage();
-        if (new File(imagePath).exists()) {
-            FileUtil.deleteFile(new File(imagePath));
-        }
+        return path;
     }
 }

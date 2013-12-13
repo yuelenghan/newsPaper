@@ -28,7 +28,7 @@ public class BaseController {
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("success", false);
         returnMap.put("msg", "操作失败!");
-        returnMap.put("exception", e);
+        returnMap.put("caused by", e.getCause());
         return returnMap;
     }
 

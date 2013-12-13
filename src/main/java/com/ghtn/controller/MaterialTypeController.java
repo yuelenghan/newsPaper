@@ -38,7 +38,7 @@ public class MaterialTypeController extends BaseController {
     @RequestMapping("/removeMaterialType")
     @ResponseBody
     public Map<String, Object> removeMaterialType(MaterialType materialType) throws Exception {
-        materialTypeManager.remove(materialType.getId());
+        materialTypeManager.removeMaterialType(materialType);
         return operationSuccess();
     }
 

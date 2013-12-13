@@ -2,7 +2,7 @@ package com.ghtn.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +18,7 @@ public class MaterialType implements Serializable {
     private String name;
     private Tenant tenant;
 
-    private Set<Material> materialSet;
+    private List<Material> materialList;
 
     @Id
     @GeneratedValue
@@ -49,11 +49,11 @@ public class MaterialType implements Serializable {
     }
 
     @OneToMany(mappedBy = "materialType", cascade = CascadeType.ALL)
-    public Set<Material> getMaterialSet() {
-        return materialSet;
+    public List<Material> getMaterialList() {
+        return materialList;
     }
 
-    public void setMaterialSet(Set<Material> materialSet) {
-        this.materialSet = materialSet;
+    public void setMaterialList(List<Material> materialList) {
+        this.materialList = materialList;
     }
 }

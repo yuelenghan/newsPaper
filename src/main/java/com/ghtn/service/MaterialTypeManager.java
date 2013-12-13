@@ -15,4 +15,6 @@ public interface MaterialTypeManager extends GenericManager<MaterialType, Long> 
     List<MaterialTypeVO> listMaterialType();
 
     MaterialType update(MaterialType materialType);
+
+    void removeMaterialType(MaterialType materialType);
 }

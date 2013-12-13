@@ -3,7 +3,6 @@ package com.ghtn.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +23,7 @@ public class Material implements Serializable {
     private Tenant tenant;
     private Material parent;
 
-    private Set<Material> child;
+    private List<Material> children;
     private List<Tag> tagList;
 
     @Id
@@ -100,12 +99,12 @@ public class Material implements Serializable {
     }
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parent")
-    public Set<Material> getChild() {
-        return child;
+    public List<Material> getChildren() {
+        return children;
     }
 
-    public void setChild(Set<Material> child) {
-        this.child = child;
+    public void setChildren(List<Material> children) {
+        this.children = children;
     }
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
