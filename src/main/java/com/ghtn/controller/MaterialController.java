@@ -35,12 +35,8 @@ public class MaterialController extends BaseController {
 
     @RequestMapping("/addMaterialText")
     @ResponseBody
-    public Map<String, Object> addMaterialText(Material material) throws Exception {
-        try {
-            materialManager.save(material);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public Map<String, Object> addMaterialText(MaterialVO materialVO) throws Exception {
+        materialManager.addMaterialText(materialVO);
         return operationSuccess();
     }
 
@@ -79,7 +75,7 @@ public class MaterialController extends BaseController {
     @RequestMapping("/uploadImageAdd")
     @ResponseBody
     public Map<String, Object> uploadImageAdd(@RequestParam("imageFile") CommonsMultipartFile imageFile, HttpSession session)
-    throws Exception {
+            throws Exception {
         String imageName = FileUtil.uploadFile(imageFile);
         session.setAttribute("imageName0", imageName);
 

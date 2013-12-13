@@ -11,9 +11,13 @@ public class MaterialVO {
     private String type;
     private String text;
     private String image;
-    private String[] tags;
+    private Long[] tagIds;
+    private String[] tagNames;
+    private String tagNameStr;
+    private Long materialTypeId;
     private Long parentId;
     private String parentTitle;
+    private Long[] childIds;
     private String[] childTitle;
     private String[] childPath;
     private Integer childCount;
@@ -58,12 +62,12 @@ public class MaterialVO {
         this.image = image;
     }
 
-    public String[] getTags() {
-        return tags;
+    public Long[] getTagIds() {
+        return tagIds;
     }
 
-    public void setTags(String[] tags) {
-        this.tags = tags;
+    public void setTagIds(Long[] tagIds) {
+        this.tagIds = tagIds;
     }
 
     public String getParentTitle() {
@@ -104,5 +108,37 @@ public class MaterialVO {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public Long[] getChildIds() {
+        return childIds;
+    }
+
+    public void setChildIds(Long[] childIds) {
+        this.childIds = childIds;
+    }
+
+    public Long getMaterialTypeId() {
+        return materialTypeId;
+    }
+
+    public void setMaterialTypeId(Long materialTypeId) {
+        this.materialTypeId = materialTypeId;
+    }
+
+    public String[] getTagNames() {
+        return tagNames;
+    }
+
+    public void setTagNames(String[] tagNames) {
+        this.tagNames = tagNames;
+    }
+
+    public String getTagNameStr() {
+        return tagNameStr;
+    }
+
+    public void setTagNameStr(String tagNameStr) {
+        this.tagNameStr = tagNameStr;
     }
 }

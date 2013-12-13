@@ -107,7 +107,7 @@ public class Material implements Serializable {
         this.children = children;
     }
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "t_material_tag",
             joinColumns = {@JoinColumn(name = "materialId")},
             inverseJoinColumns = {@JoinColumn(name = "tagId")})

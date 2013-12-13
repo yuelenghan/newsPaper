@@ -117,11 +117,18 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
 
         List<Tag> tagList = material.getTagList();
         if (tagList != null && tagList.size() > 0) {
-            String[] tags = new String[tagList.size()];
+            Long[] tagIds = new Long[tagList.size()];
+            String[] tagNames = new String[tagList.size()];
+            StringBuffer tagNameSb = new StringBuffer();
             for (int i = 0; i < tagList.size(); i++) {
-                tags[i] = tagList.get(i).getName();
+                tagIds[i] = tagList.get(i).getId();
+                tagNames[i] = tagList.get(i).getName();
+                tagNameSb.append(tagNames[i] + ",");
             }
-            materialVO.setTags(tags);
+            tagNameSb.deleteCharAt(tagNameSb.length() - 1); // 多一个空格
+            materialVO.setTagIds(tagIds);
+            materialVO.setTagNames(tagNames);
+            materialVO.setTagNameStr(tagNameSb.toString());
         }
 
         if (material.getType().trim().equals("图片")) {
@@ -289,6 +296,33 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         }
 
         material.setImage(image);
+
+        save(material);
+    }
+
+    @Override
+    public void addMaterialText(MaterialVO materialVO) {
+        Material material = new Material();
+        material.setTitle(materialVO.getTitle());
+        material.setText(materialVO.getText());
+        material.setType(materialVO.getType());
+
+        MaterialType materialType = new MaterialType();
+        materialType.setId(materialVO.getMaterialTypeId());
+        material.setMaterialType(materialType);
+
+        if (materialVO.getTagIds() != null && materialVO.getTagIds().length > 0) {
+            Long[] tags = materialVO.getTagIds();
+            List<Tag> tagList = new ArrayList<>();
+            for (int i = 0; i < tags.length; i++) {
+                Tag tag = new Tag();
+                tag.setId(tags[i]);
+
+                tagList.add(tag);
+            }
+
+            material.setTagList(tagList);
+        }
 
         save(material);
     }

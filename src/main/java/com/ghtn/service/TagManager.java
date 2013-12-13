@@ -1,7 +1,9 @@
 package com.ghtn.service;
 
 import com.ghtn.model.Tag;
-import com.sun.swing.internal.plaf.basic.resources.basic_es;
+import com.ghtn.vo.TagVO;
+
+import java.util.List;
 
 /**
  * User: Administrator
@@ -9,4 +11,9 @@ import com.sun.swing.internal.plaf.basic.resources.basic_es;
  * Time: 上午10:17
  */
 public interface TagManager extends GenericManager<Tag, Long> {
+
+    List<TagVO> listTag();
+
+    void update(Tag tag);
+
 }

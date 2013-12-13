@@ -22,9 +22,10 @@ public class TagManagerTest extends BaseTestCase {
 
     @Test
     public void testSave() throws Exception {
-        Tag tag = new Tag();
-        tag.setName("test");
-
-        tagManager.save(tag);
+        for (int i = 0; i < 5; i++) {
+            Tag tag = new Tag();
+            tag.setName("标签" + (i + 1));
+            tagManager.save(tag);
+        }
     }
 }

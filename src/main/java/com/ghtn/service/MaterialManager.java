@@ -49,4 +49,5 @@ public interface MaterialManager extends GenericManager<Material, Long> {
 
     void updateMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception;
 
+    void addMaterialText(MaterialVO materialVO);
 }
