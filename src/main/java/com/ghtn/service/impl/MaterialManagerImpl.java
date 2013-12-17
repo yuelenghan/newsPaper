@@ -53,16 +53,18 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
      */
     @Override
     public List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit) {
-        List<Material> list;
+        List<Material> list = new ArrayList<>();
         List<MaterialVO> returnList = new ArrayList<>();
 
         if (materialType == null || materialType.getId() == null || materialType.getId() == 0) {
             // TODO : 得到当前租户下的所有MaterialType
             List<MaterialType> materialTypeList = materialTypeManager.getAll();
-            if (!StringUtil.isNullStr(type)) {
-                list = materialDao.listMaterialByPage(materialTypeList, type, start, limit);
-            } else {
-                list = materialDao.listMaterialByPage(materialTypeList, start, limit);
+            if (materialTypeList != null && materialTypeList.size() > 0) {
+                if (!StringUtil.isNullStr(type)) {
+                    list = materialDao.listMaterialByPage(materialTypeList, type, start, limit);
+                } else {
+                    list = materialDao.listMaterialByPage(materialTypeList, start, limit);
+                }
             }
         } else {
             if (!StringUtil.isNullStr(type)) {
@@ -92,10 +94,14 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         if (materialType == null || materialType.getId() == null || materialType.getId() == 0) {
             // TODO : 得到当前租户下的所有MaterialType
             List<MaterialType> materialTypeList = materialTypeManager.getAll();
-            if (!StringUtil.isNullStr(type)) {
-                return materialDao.getMaterialCount(materialTypeList, type);
+            if (materialTypeList != null && materialTypeList.size() > 0) {
+                if (!StringUtil.isNullStr(type)) {
+                    return materialDao.getMaterialCount(materialTypeList, type);
+                } else {
+                    return materialDao.getMaterialCount(materialTypeList);
+                }
             } else {
-                return materialDao.getMaterialCount(materialTypeList);
+                return 0L;
             }
         } else {
             if (!StringUtil.isNullStr(type)) {
@@ -166,17 +172,55 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
     }
 
     @Override
-    public Material updateMaterial(Material material) {
-        Material old = get(material.getId());
-        old.setTitle(material.getTitle());
-        old.setText(material.getText());
-        old.setImage(material.getImage());
-        old.setTagList(material.getTagList());
+    public Material updateMaterial(MaterialVO materialVO) {
+        Material old = get(materialVO.getId());
+        old.setTitle(materialVO.getTitle());
+        old.setText(materialVO.getText());
+
+        // 更新标签
+        List<Tag> tagList = new ArrayList<>();
+        if (materialVO.getTagIds() != null && materialVO.getTagIds().length > 0) {
+            Long[] tags = materialVO.getTagIds();
+
+            for (int i = 0; i < tags.length; i++) {
+                Tag tag = new Tag();
+                tag.setId(tags[i]);
+
+                tagList.add(tag);
+            }
+        }
+        old.setTagList(tagList);
+
         return save(old);
     }
 
     @Override
-    public void addMaterialImage(Material material, HttpSession session) throws Exception {
+    public void addMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
+        Material material = new Material();
+        material.setTitle(materialVO.getTitle());
+        material.setType(materialVO.getType());
+
+        MaterialType materialType = new MaterialType();
+        materialType.setId(materialVO.getMaterialTypeId());
+        material.setMaterialType(materialType);
+
+        Material parent = new Material();
+        parent.setId(materialVO.getParentId());
+        material.setParent(parent);
+
+        if (materialVO.getTagIds() != null && materialVO.getTagIds().length > 0) {
+            Long[] tags = materialVO.getTagIds();
+            List<Tag> tagList = new ArrayList<>();
+            for (int i = 0; i < tags.length; i++) {
+                Tag tag = new Tag();
+                tag.setId(tags[i]);
+
+                tagList.add(tag);
+            }
+
+            material.setTagList(tagList);
+        }
+
         // 从临时目录复制图片
         log.info("新增加图片素材, 开始复制临时文件......");
         String image = copyFromTemp(material, String.valueOf(session.getAttribute("imageName0")));
@@ -252,8 +296,8 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         material.setParent(parent);
         material.setTitle(materialVO.getTitle());
 
+        // 更新图片
         String image = material.getImage();
-
         // 如果存在临时文件, 说明修改了图片
         String imageName = String.valueOf(session.getAttribute("imageName" + material.getId()));
         if (StringUtil.isNullStr(imageName)) {
@@ -296,6 +340,19 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         }
 
         material.setImage(image);
+
+        // 更新标签
+        List<Tag> tagList = new ArrayList<>();
+        if (materialVO.getTagIds() != null && materialVO.getTagIds().length > 0) {
+            Long[] tags = materialVO.getTagIds();
+            for (int i = 0; i < tags.length; i++) {
+                Tag tag = new Tag();
+                tag.setId(tags[i]);
+
+                tagList.add(tag);
+            }
+        }
+        material.setTagList(tagList);
 
         save(material);
     }

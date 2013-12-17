@@ -37,43 +37,24 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
     @Override
     public ContactsTypeVO getContactsTypeTree(Tenant tenant) {
         //TODO: 根据租户得到此租户下的通讯录根节点
-        ContactsType root = get(1L);
-        //Map<String, Object> treeMap = new HashMap<>();
+        ContactsType root = null;
+        root = get(1L);
+
         ContactsTypeVO contactsTypeVO = new ContactsTypeVO();
 
-        // jquery easyui 的tree组件，接受的json格式必须为数组形式
-        /*List treeList = new ArrayList();
-        treeList.add(getTree(root, contactsTypeVO));*/
 
         return getTree(root, contactsTypeVO);
 
     }
 
     public ContactsTypeVO getTree(ContactsType contactsType, ContactsTypeVO contactsTypeVO) {
-//        map.put("id", contactsType.getId());
-//        map.put("text", contactsType.getName());
-        // map.put("state", "open");
 
         contactsTypeVO.setId(contactsType.getId());
         contactsTypeVO.setText(contactsType.getName());
         contactsTypeVO.setLeaf(contactsType.getLeaf());
-        /*Map<String, String> attributes = new HashMap<>();
-        if (contactsType.getRoot()) {
-            attributes.put("root", "y");
-        } else {
-            attributes.put("root", "n");
-        }*/
         if (contactsType.getLeaf()) {
-           /* attributes.put("leaf", "y");
-            map.put("attributes", attributes);*/
-//            map.put("leaf", true);
-
             return contactsTypeVO;
         } else {
-            /*attributes.put("leaf", "n");
-            map.put("attributes", attributes);*/
-            //map.put("leaf", false);
-            //map.put("expanded", true);
 
             contactsTypeVO.setExpanded(true);
             List<ContactsType> children = contactsType.getChildren();
@@ -81,7 +62,6 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
             for (ContactsType child : children) {
                 list.add(getTree(child, new ContactsTypeVO()));
             }
-            //map.put("children", list);
             contactsTypeVO.setChildren(list);
             return contactsTypeVO;
         }
@@ -180,4 +160,5 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
             throw new Exception("此节点没有父节点! 节点id = " + contactsType.getId());
         }
     }
+
 }

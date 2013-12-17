@@ -67,8 +67,8 @@ public class MaterialController extends BaseController {
 
     @RequestMapping("/updateMaterialText")
     @ResponseBody
-    public Map<String, Object> updateMaterialText(Material material) throws Exception {
-        materialManager.updateMaterial(material);
+    public Map<String, Object> updateMaterialText(MaterialVO materialVO) throws Exception {
+        materialManager.updateMaterial(materialVO);
         return operationSuccess();
     }
 
@@ -102,8 +102,8 @@ public class MaterialController extends BaseController {
 
     @RequestMapping("/addMaterialImage")
     @ResponseBody
-    public Map<String, Object> addMaterialImage(Material material, HttpSession session) throws Exception {
-        materialManager.addMaterialImage(material, session);
+    public Map<String, Object> addMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
+        materialManager.addMaterialImage(materialVO, session);
         return operationSuccess();
     }
 

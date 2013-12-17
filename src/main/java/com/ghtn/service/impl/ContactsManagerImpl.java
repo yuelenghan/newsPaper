@@ -175,7 +175,11 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
             return contactsDao.getContactsCount(contactsType);
         } else {
             List<ContactsType> leaves = contactsTypeManager.getLeaves(contactsType);
-            return contactsDao.getContactsCount(leaves);
+            if (leaves != null && leaves.size() > 0) {
+                return contactsDao.getContactsCount(leaves);
+            } else {
+                return 0L;
+            }
         }
     }
 

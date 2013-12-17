@@ -373,13 +373,14 @@
         <!-- hibernate config -->
         <hibernate.dialect>org.hibernate.dialect.MySQL5Dialect</hibernate.dialect>
         <hibernate.hbm2ddl.auto>update</hibernate.hbm2ddl.auto>
-        <hibernate.show_sql>true</hibernate.show_sql>
+        <hibernate.show_sql>false</hibernate.show_sql>
         <hibernate.format_sql>false</hibernate.format_sql>
         <hibernate.query.substitutions>true 1, false 0</hibernate.query.substitutions>
         <hibernate.default_batch_fetch_size>16</hibernate.default_batch_fetch_size>
         <hibernate.cache.use_second_level_cache>true</hibernate.cache.use_second_level_cache>
         <hibernate.cache.use_query_cache>true</hibernate.cache.use_query_cache>
-        <hibernate.cache.region.factory_class>org.hibernate.cache.EhCacheRegionFactory</hibernate.cache.region.factory_class>
+        <hibernate.cache.region.factory_class>org.hibernate.cache.EhCacheRegionFactory
+        </hibernate.cache.region.factory_class>
         <net.sf.ehcache.configurationResourceName>/ehcache.xml</net.sf.ehcache.configurationResourceName>
         <hibernate.cache.use_structured_entries>true</hibernate.cache.use_structured_entries>
         <hibernate.search.default.directory_provider>filesystem</hibernate.search.default.directory_provider>

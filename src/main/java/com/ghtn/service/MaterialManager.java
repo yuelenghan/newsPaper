@@ -35,9 +35,9 @@ public interface MaterialManager extends GenericManager<Material, Long> {
 
     MaterialVO getMaterial(Material material);
 
-    Material updateMaterial(Material material);
+    Material updateMaterial(MaterialVO materialVO);
 
-    void addMaterialImage(Material material, HttpSession session) throws Exception;
+    void addMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception;
 
     void removeMaterial(Material material);
 
