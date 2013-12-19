@@ -2,6 +2,7 @@ package com.ghtn.controller;
 
 import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
+import com.ghtn.model.Tag;
 import com.ghtn.service.MaterialManager;
 import com.ghtn.util.FileUtil;
 import com.ghtn.vo.MaterialVO;
@@ -53,6 +54,18 @@ public class MaterialController extends BaseController {
         Map<String, Object> returnMap = new HashMap<>();
         List<MaterialVO> list = materialManager.getMaterialByPage(materialType, type, start, limit);
         Long totalCount = materialManager.getMaterialCount(materialType, type);
+        returnMap.put("success", true);
+        returnMap.put("total", totalCount);
+        returnMap.put("items", list);
+        return returnMap;
+    }
+
+    @RequestMapping("/getTagMaterialByPage")
+    @ResponseBody
+    public Map<String, Object> getTagMaterialByPage(Tag tag, String type, Integer start, Integer limit) {
+        Map<String, Object> returnMap = new HashMap<>();
+        List<MaterialVO> list = materialManager.getMaterialByPage(tag, type, start, limit);
+        Long totalCount = materialManager.getMaterialCount(tag, type);
         returnMap.put("success", true);
         returnMap.put("total", totalCount);
         returnMap.put("items", list);

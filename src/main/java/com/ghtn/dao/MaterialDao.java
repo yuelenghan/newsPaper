@@ -54,6 +54,14 @@ public interface MaterialDao extends GenericDao<Material, Long> {
      */
     List<Material> listMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit);
 
+    List<Material> listTagMaterialByPage(Long[] tagIds, Integer start, Integer limit);
+
+    List<Material> listTagMaterialByPage(Long[] tagIds, String type, Integer start, Integer limit);
+
+    List<Material> listTagMaterialByPage(Long tagId, Integer start, Integer limit);
+
+    List<Material> listTagMaterialByPage(Long tagId, String type, Integer start, Integer limit);
+
     /**
      * 根据素材类别集合得到素材记录数
      *
@@ -63,7 +71,7 @@ public interface MaterialDao extends GenericDao<Material, Long> {
     Long getMaterialCount(List<MaterialType> materialTypeList);
 
     /**
-     * 根据素材类别集合和徐才类型得到素材记录数
+     * 根据素材类别集合和素材类型得到素材记录数
      *
      * @param materialTypeList 素材类别集合
      * @param type             素材类型
@@ -87,4 +95,12 @@ public interface MaterialDao extends GenericDao<Material, Long> {
      * @return 素材记录数
      */
     Long getMaterialCount(MaterialType materialType, String type);
+
+    Long getMaterialCount(Long[] tagIds, String type);
+
+    Long getMaterialCount(Long[] tagIds);
+
+    Long getMaterialCount(Long tagId, String type);
+
+    Long getMaterialCount(Long tagId);
 }

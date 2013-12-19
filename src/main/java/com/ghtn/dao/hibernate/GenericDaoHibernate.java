@@ -181,4 +181,10 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         return sess.createQuery(hql).list();
     }
 
+    @Override
+    public List<T> queryHql(String hql, Integer start, Integer limit) {
+        Session sess = getSession();
+        return sess.createQuery(hql).setFirstResult(start).setMaxResults(limit).list();
+    }
+
 }

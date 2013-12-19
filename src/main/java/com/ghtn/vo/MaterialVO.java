@@ -15,6 +15,7 @@ public class MaterialVO {
     private String[] tagNames;
     private String tagNameStr;
     private Long materialTypeId;
+    private String materialTypeName;
     private Long parentId;
     private String parentTitle;
     private Long[] childIds;
@@ -140,5 +141,13 @@ public class MaterialVO {
 
     public void setTagNameStr(String tagNameStr) {
         this.tagNameStr = tagNameStr;
+    }
+
+    public String getMaterialTypeName() {
+        return materialTypeName;
+    }
+
+    public void setMaterialTypeName(String materialTypeName) {
+        this.materialTypeName = materialTypeName;
     }
 }

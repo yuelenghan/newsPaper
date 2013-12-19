@@ -20,6 +20,13 @@ public class MaterialManagerTest extends BaseTestCase {
         this.materialManager = materialManager;
     }
 
+    private TagManager tagManager;
+
+    @Resource
+    public void setTagManager(TagManager tagManager) {
+        this.tagManager = tagManager;
+    }
+
     @Test
     public void testSave() throws Exception {
         /*MaterialType materialType = new MaterialType();
@@ -41,4 +48,5 @@ public class MaterialManagerTest extends BaseTestCase {
             materialManager.save(material);
         }
     }
+
 }

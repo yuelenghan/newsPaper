@@ -2,6 +2,7 @@ package com.ghtn.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -19,7 +20,7 @@ public class Tag implements Serializable {
     private Tenant tenant;
 
     private Set<Frame> frameSet;
-    private Set<Material> materialSet;
+    private List<Material> materialList;
     private Set<Template> templateSet;
 
     @Id
@@ -60,12 +61,12 @@ public class Tag implements Serializable {
     }
 
     @ManyToMany(mappedBy = "tagList", fetch = FetchType.LAZY)
-    public Set<Material> getMaterialSet() {
-        return materialSet;
+    public List<Material> getMaterialList() {
+        return materialList;
     }
 
-    public void setMaterialSet(Set<Material> materialSet) {
-        this.materialSet = materialSet;
+    public void setMaterialList(List<Material> materialList) {
+        this.materialList = materialList;
     }
 
     @ManyToMany(mappedBy = "tagSet", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

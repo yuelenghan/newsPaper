@@ -9,6 +9,9 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -95,6 +98,56 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .addOrder(Order.asc("id")).list();
     }
 
+    @Override
+    public List<Material> listTagMaterialByPage(Long[] tagIds, Integer start, Integer limit) {
+        Session sess = getSession();
+        List<Material> list = sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag") // 多对多关联查询需要使用别名
+                .add(Restrictions.in("tag.id", tagIds)) // 只能使用属性,不能使用对象
+                .setFirstResult(start).setMaxResults(limit)
+                .addOrder(Order.asc("id")).list();
+        Collection<Material> result = new LinkedHashSet<>(list); // 去除重复记录
+        return new ArrayList<>(result);
+    }
+
+    @Override
+    public List<Material> listTagMaterialByPage(Long[] tagIds, String type, Integer start, Integer limit) {
+        Session sess = getSession();
+        List<Material> list = sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag") // 多对多关联查询需要使用别名
+                .add(Restrictions.in("tag.id", tagIds)) // 只能使用属性,不能使用对象
+                .add(Restrictions.eq("type", type))
+                .setFirstResult(start).setMaxResults(limit)
+                .addOrder(Order.asc("id")).list();
+        Collection<Material> result = new LinkedHashSet<>(list); // 去除重复记录
+        return new ArrayList<>(result);
+    }
+
+    @Override
+    public List<Material> listTagMaterialByPage(Long tagId, Integer start, Integer limit) {
+        Session sess = getSession();
+        List<Material> list = sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag") // 多对多关联查询需要使用别名
+                .add(Restrictions.eq("tag.id", tagId)) // 只能使用属性,不能使用对象
+                .setFirstResult(start).setMaxResults(limit)
+                .addOrder(Order.asc("id")).list();
+        Collection<Material> result = new LinkedHashSet<>(list); // 去除重复记录
+        return new ArrayList<>(result);
+    }
+
+    @Override
+    public List<Material> listTagMaterialByPage(Long tagId, String type, Integer start, Integer limit) {
+        Session sess = getSession();
+        List<Material> list = sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag") // 多对多关联查询需要使用别名
+                .add(Restrictions.eq("tag.id", tagId)) // 只能使用属性,不能使用对象
+                .add(Restrictions.eq("type", type))
+                .setFirstResult(start).setMaxResults(limit)
+                .addOrder(Order.asc("id")).list();
+        Collection<Material> result = new LinkedHashSet<>(list); // 去除重复记录
+        return new ArrayList<>(result);
+    }
+
     /**
      * 根据素材类别集合得到素材记录数
      *
@@ -147,5 +200,43 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .add(Restrictions.eq("materialType", materialType))
                 .add(Restrictions.eq("type", type))
                 .setProjection(Projections.count("id")).uniqueResult();
+    }
+
+    @Override
+    public Long getMaterialCount(Long[] tagIds, String type) {
+        Session sess = getSession();
+        return (Long) sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag")
+                .add(Restrictions.in("tag.id", tagIds))
+                .add(Restrictions.eq("type", type))
+                .setProjection(Projections.countDistinct("id")).uniqueResult();
+    }
+
+    @Override
+    public Long getMaterialCount(Long[] tagIds) {
+        Session sess = getSession();
+        return (Long) sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag")
+                .add(Restrictions.in("tag.id", tagIds))
+                .setProjection(Projections.countDistinct("id")).uniqueResult();
+    }
+
+    @Override
+    public Long getMaterialCount(Long tagId, String type) {
+        Session sess = getSession();
+        return (Long) sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag")
+                .add(Restrictions.eq("tag.id", tagId))
+                .add(Restrictions.eq("type", type))
+                .setProjection(Projections.countDistinct("id")).uniqueResult();
+    }
+
+    @Override
+    public Long getMaterialCount(Long tagId) {
+        Session sess = getSession();
+        return (Long) sess.createCriteria(Material.class)
+                .createAlias("tagList", "tag")
+                .add(Restrictions.eq("tag.id", tagId))
+                .setProjection(Projections.countDistinct("id")).uniqueResult();
     }
 }

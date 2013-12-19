@@ -2,6 +2,7 @@ package com.ghtn.service;
 
 import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
+import com.ghtn.model.Tag;
 import com.ghtn.vo.MaterialVO;
 
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,8 @@ public interface MaterialManager extends GenericManager<Material, Long> {
      */
     List<MaterialVO> getMaterialByPage(MaterialType materialType, String type, Integer start, Integer limit);
 
+    List<MaterialVO> getMaterialByPage(Tag tag, String type, Integer start, Integer limit);
+
     /**
      * 根据素材类别和素材类型得到素材记录数
      *
@@ -32,6 +35,8 @@ public interface MaterialManager extends GenericManager<Material, Long> {
      * @return 素材记录数
      */
     Long getMaterialCount(MaterialType materialType, String type);
+
+    Long getMaterialCount(Tag tag, String type);
 
     MaterialVO getMaterial(Material material);
 
@@ -50,4 +55,5 @@ public interface MaterialManager extends GenericManager<Material, Long> {
     void updateMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception;
 
     void addMaterialText(MaterialVO materialVO);
+
 }
