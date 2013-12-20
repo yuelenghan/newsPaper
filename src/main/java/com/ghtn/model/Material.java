@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 素材实体类
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-11-6
@@ -14,17 +15,18 @@ import java.util.List;
 @Entity
 @Table(name = "t_material")
 public class Material implements Serializable {
-    private Long id;
-    private MaterialType materialType;
-    private String title;
-    private String type;
-    private String text;
-    private String image;
-    private Tenant tenant;
-    private Material parent;
+    private Long id; //主键
+    private MaterialType materialType; //素材类别
+    private String title; //素材标题
+    private String type; //素材类型, 文本或图片
+    private String text; //文本素材的文本内容
+    private String image; //图片素材的图片路径
+    private Tenant tenant; //租户
+    private Material parent; //父节点
 
-    private List<Material> children;
-    private List<Tag> tagList;
+    //关系映射
+    private List<Material> children; //子节点
+    private List<Tag> tagList; //标签
 
     @Id
     @GeneratedValue

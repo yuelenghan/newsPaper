@@ -13,6 +13,12 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public interface ContactsTypeDao extends GenericDao<ContactsType, Long> {
+    /**
+     * 得到此通讯录类别下的所有叶子节点
+     *
+     * @param contactsType 通讯录类别
+     * @return 所有叶子节点
+     */
     List<ContactsType> getLeaves(ContactsType contactsType);
 
     /**

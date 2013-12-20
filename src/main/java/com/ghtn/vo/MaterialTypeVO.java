@@ -1,14 +1,15 @@
 package com.ghtn.vo;
 
 /**
+ * 素材类别vo, 树形结构
  * User: Administrator
  * Date: 13-11-27
  * Time: 下午4:49
  */
 public class MaterialTypeVO {
-    private Long id;
-    private String text;
-    private Boolean leaf;
+    private Long id;    //主键
+    private String text;    //树形节点名称
+    private Boolean leaf;   //是否叶子节点, 叶子:true, 非叶子:false
 
     public Long getId() {
         return id;

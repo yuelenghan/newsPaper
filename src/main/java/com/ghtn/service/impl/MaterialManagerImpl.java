@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 素材service实现类
  * User: Administrator
  * Date: 13-11-7
  * Time: 上午9:59
@@ -28,6 +29,9 @@ import java.util.List;
 @Service("materialManager")
 public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> implements MaterialManager {
 
+    /**
+     * 素材dao, 由spring注入
+     */
     private MaterialDao materialDao;
 
     @Autowired
@@ -36,6 +40,9 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         this.materialDao = materialDao;
     }
 
+    /**
+     * 素材类型service, 由spring注入
+     */
     private MaterialTypeManager materialTypeManager;
 
     @Resource
@@ -43,6 +50,9 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         this.materialTypeManager = materialTypeManager;
     }
 
+    /**
+     * 标签manager, 由spring注入
+     */
     private TagManager tagManager;
 
     @Resource
@@ -90,6 +100,15 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         return returnList;
     }
 
+    /**
+     * 根据标签和素材类型, 分页得到素材列表
+     *
+     * @param tag   标签
+     * @param type  素材类型(文本或图片)
+     * @param start 起始行
+     * @param limit 一页最大多少行
+     * @return 素材列表
+     */
     @Override
     public List<MaterialVO> getMaterialByPage(Tag tag, String type, Integer start, Integer limit) {
         List<Material> materialList = new ArrayList<>();
@@ -161,6 +180,13 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
 
     }
 
+    /**
+     * 根据标签别和素材类型得到素材记录数
+     *
+     * @param tag  标签
+     * @param type 素材类型（文本或图片）
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(Tag tag, String type) {
         if (tag == null || tag.getId() == null || tag.getId() == 0) {
@@ -189,6 +215,12 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         return 0L;
     }
 
+    /**
+     * 把素材的实体类, 转换为vo类
+     *
+     * @param material 素材实体类
+     * @return 素材vo类
+     */
     private MaterialVO transformToVO(Material material) {
         MaterialVO materialVO = new MaterialVO();
         materialVO.setId(material.getId());
@@ -244,11 +276,12 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         return materialVO;
     }
 
-    @Override
-    public MaterialVO getMaterial(Material material) {
-        return transformToVO(get(material.getId()));
-    }
-
+    /**
+     * 更新素材
+     *
+     * @param materialVO 需要更新的素材信息
+     * @return 更新之后的素材信息
+     */
     @Override
     public Material updateMaterial(MaterialVO materialVO) {
         Material old = get(materialVO.getId());
@@ -277,6 +310,13 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         return save(old);
     }
 
+    /**
+     * 增加图片素材
+     *
+     * @param materialVO 素材信息
+     * @param session    此次会话的session
+     * @throws Exception 抛出产生的所有异常信息
+     */
     @Override
     public void addMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
         Material material = new Material();
@@ -309,6 +349,11 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         save(material);
     }
 
+    /**
+     * 删除图片素材
+     *
+     * @param material 需要删除的图片素材信息
+     */
     @Override
     public void removeMaterialImage(Material material) {
         Material parent = material.getParent();
@@ -322,6 +367,11 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         deleteMaterialImage(material);
     }
 
+    /**
+     * 删除图片素材在硬盘上存放的图片
+     *
+     * @param material 图片素材
+     */
     @Override
     public void deleteMaterialImage(Material material) {
         if (material != null && material.getType().equals("图片")) {
@@ -334,6 +384,11 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         }
     }
 
+    /**
+     * 删除文本素材
+     *
+     * @param material 需要删除的文本素材信息
+     */
     @Override
     public void removeMaterialText(Material material) {
         remove(material);
@@ -347,6 +402,11 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         }
     }
 
+    /**
+     * 删除素材
+     *
+     * @param material 需要删除的素材信息
+     */
     @Override
     public void removeMaterial(Material material) {
         material = get(material.getId());
@@ -359,6 +419,13 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         }
     }
 
+    /**
+     * 更新图片素材
+     *
+     * @param materialVO 素材信息
+     * @param session    此次会话的session
+     * @throws Exception 抛出产生的所有异常信息
+     */
     @Override
     public void updateMaterialImage(MaterialVO materialVO, HttpSession session) throws Exception {
         // 前端会传过来id,title,parentId
@@ -437,6 +504,11 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         save(material);
     }
 
+    /**
+     * 增加文本素材
+     *
+     * @param materialVO 素材信息
+     */
     @Override
     public void addMaterialText(MaterialVO materialVO) {
         Material material = new Material();
@@ -464,6 +536,14 @@ public class MaterialManagerImpl extends GenericManagerImpl<Material, Long> impl
         save(material);
     }
 
+    /**
+     * 把图片从临时目录, 复制到正式的发布目录
+     *
+     * @param material  图片素材信息
+     * @param imageName 图片的临时文件名称
+     * @return 包含文件名的正式目录
+     * @throws Exception 抛出产生的所有异常信息
+     */
     private String copyFromTemp(Material material, String imageName) throws Exception {
         String srcPath = ConstantUtil.UPLOAD_TEMP_PATH + "/" + imageName;
         log.debug("srcPath : " + srcPath);

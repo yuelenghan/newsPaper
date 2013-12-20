@@ -1,6 +1,7 @@
 package com.ghtn.service;
 
 import com.ghtn.model.MaterialType;
+import com.ghtn.model.Tenant;
 import com.ghtn.vo.MaterialTypeVO;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
  */
 public interface MaterialTypeManager extends GenericManager<MaterialType, Long> {
 
-    List<MaterialTypeVO> listMaterialType();
+    List<MaterialTypeVO> listMaterialType(Tenant tenant);
 
     MaterialType update(MaterialType materialType);
 

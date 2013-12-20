@@ -10,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
+ * 通讯录实体类
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-11-6
@@ -21,13 +22,15 @@ import java.io.Serializable;
 @Indexed
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Contacts implements Serializable {
-    private Long id;
-    private Tenant tenant;
-    private ContactsType contactsType;
-    private String name;
-    private String idCard;
-    private String phone;
-    private String email;
+    private Long id; //主键
+    private Tenant tenant; //租户
+    private ContactsType contactsType; //通讯录类别
+    private String name; //通讯录人员姓名
+    private String idCard; //身份证号
+    private String phone; //手机号
+    private String email; //邮箱
+
+    //扩展字段
     private String ext1;
     private String ext2;
     private String ext3;

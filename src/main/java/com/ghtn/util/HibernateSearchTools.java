@@ -20,9 +20,9 @@ import org.hibernate.search.indexes.IndexReaderAccessor;
 import java.util.Collection;
 
 /**
- * Utility class to generate lucene queries for hibernate search and perform full reindexing.
+ * hibernateSearch工具类
  *
- * @author jgarcia
+ * @author lh
  */
 public class HibernateSearchTools {
     protected static final Log log = LogFactory.getLog(HibernateSearchTools.class);

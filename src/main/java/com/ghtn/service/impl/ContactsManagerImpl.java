@@ -19,12 +19,16 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 通讯录service实现类
  * User: Administrator
  * Date: 13-11-7
  * Time: 上午9:32
  */
 @Service("contactsManager")
 public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> implements ContactsManager {
+    /**
+     * 通讯录dao, 由spring注入
+     */
     private ContactsDao contactsDao;
 
     @Autowired
@@ -33,6 +37,9 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
         this.contactsDao = contactsDao;
     }
 
+    /**
+     * 通讯录类别service, 由spring注入
+     */
     private ContactsTypeManager contactsTypeManager;
 
     @Resource
@@ -183,6 +190,12 @@ public class ContactsManagerImpl extends GenericManagerImpl<Contacts, Long> impl
         }
     }
 
+    /**
+     * 更新通讯录人员信息
+     *
+     * @param contacts 通讯录人员信息
+     * @return 更新之后的通讯录人员信息
+     */
     @Override
     public Contacts updateContacts(Contacts contacts) {
         Contacts old = get(contacts.getId());

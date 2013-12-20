@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ * 标签的实体类
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-11-6
@@ -15,13 +16,14 @@ import java.util.Set;
 @Entity
 @Table(name = "t_tag")
 public class Tag implements Serializable {
-    private Long id;
-    private String name;
-    private Tenant tenant;
+    private Long id; //主键
+    private String name; //标签名称
+    private Tenant tenant; //租户
 
-    private Set<Frame> frameSet;
-    private List<Material> materialList;
-    private Set<Template> templateSet;
+    //关系映射
+    private Set<Frame> frameSet; //帧集合
+    private List<Material> materialList; //素材集合
+    private Set<Template> templateSet; //模板集合
 
     @Id
     @GeneratedValue

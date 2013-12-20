@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * 日志拦截器
  * User: Administrator
  * Date: 13-11-8
  * Time: 下午5:17

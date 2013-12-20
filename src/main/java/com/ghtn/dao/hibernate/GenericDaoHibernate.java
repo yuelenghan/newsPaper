@@ -65,29 +65,47 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         this.sessionFactory = sessionFactory;
     }
 
+    /**
+     * 分页得到所有实体记录
+     *
+     * @param limit 分页的起始行
+     * @param start 每页的最大行数
+     * @return 实体记录list
+     */
     @SuppressWarnings("unchecked")
     public List<T> getAll() {
         Session sess = getSession();
         return sess.createCriteria(persistentClass).list();
     }
 
+    /**
+     * 分页得到所有实体记录
+     *
+     * @param limit 分页的起始行
+     * @param start 每页的最大行数
+     * @return 实体记录list
+     */
     @Override
     public List<T> getAll(int start, int limit) {
         Session sess = getSession();
         return sess.createCriteria(persistentClass).setFirstResult(start).setMaxResults(limit).list();
     }
 
+    /**
+     * 得到所有不重复的实体记录
+     *
+     * @return 实体记录list
+     */
     public List<T> getAllDistinct() {
         Collection<T> result = new LinkedHashSet<>(getAll());
         return new ArrayList<>(result);
     }
 
     /**
-     * 全文搜索
+     * 根据传入的查询条件, 对存在索引的实体进行全文搜索
      *
-     * @param searchTerm
-     * @return
-     * @throws SearchException
+     * @param searchTerm 查询条件
+     * @return 查询到的实体结果集
      */
     @SuppressWarnings("unchecked")
     public List<T> search(String searchTerm) throws SearchException {
@@ -146,6 +164,13 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         sess.delete(entity);
     }
 
+    /**
+     * 使用NamedQuery方式查询
+     *
+     * @param queryName   查询的名称
+     * @param queryParams 查询的参数
+     * @return 查询结果
+     */
     @SuppressWarnings("unchecked")
     public List<T> findByNamedQuery(String queryName, Map<String, Object> queryParams) {
         Session sess = getSession();
@@ -174,6 +199,12 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         HibernateSearchTools.reindexAll(async, getSessionFactory().getCurrentSession());
     }
 
+    /**
+     * 使用hql查询
+     *
+     * @param hql 查询的hql
+     * @return 查询结果
+     */
     @SuppressWarnings("unchecked")
     @Override
     public List<T> queryHql(String hql) {
@@ -181,6 +212,14 @@ public class GenericDaoHibernate<T, PK extends Serializable> implements GenericD
         return sess.createQuery(hql).list();
     }
 
+    /**
+     * 使用hql进行分页查询
+     *
+     * @param hql   查询的hql
+     * @param start 分页的起始行
+     * @param limit 每页的最大行数
+     * @return 查询结果
+     */
     @Override
     public List<T> queryHql(String hql, Integer start, Integer limit) {
         Session sess = getSession();

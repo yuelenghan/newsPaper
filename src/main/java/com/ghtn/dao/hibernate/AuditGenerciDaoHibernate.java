@@ -34,7 +34,7 @@ public class AuditGenerciDaoHibernate<T, PK extends Serializable> extends Generi
      *
      * @param pk      id
      * @param version 版本号
-     * @return
+     * @return 版本号对应的老数据
      */
     @Override
     @SuppressWarnings("unchecked")
@@ -46,7 +46,7 @@ public class AuditGenerciDaoHibernate<T, PK extends Serializable> extends Generi
      * 根据id得到该实体的所有版本号
      *
      * @param pk id
-     * @return
+     * @return 所有版本号记录
      */
     @Override
     public List<Number> getRevisions(PK pk) {
@@ -57,7 +57,7 @@ public class AuditGenerciDaoHibernate<T, PK extends Serializable> extends Generi
      * 根据版本号得到修改时间
      *
      * @param version
-     * @return
+     * @return 此版本号下数据的修改时间
      */
     @Override
     public Date getRevisionDate(Number version) {
@@ -68,7 +68,7 @@ public class AuditGenerciDaoHibernate<T, PK extends Serializable> extends Generi
      * 根据修改时间得到版本号
      *
      * @param date 修改时间
-     * @return
+     * @return 版本号
      */
     @Override
     public Number getRevisionNumber(Date date) {

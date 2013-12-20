@@ -98,6 +98,14 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .addOrder(Order.asc("id")).list();
     }
 
+    /**
+     * 根据标签id数组, 分页得到素材列表
+     *
+     * @param tagIds 标签id数组
+     * @param start  起始行
+     * @param limit  一页多少行
+     * @return 素材列表
+     */
     @Override
     public List<Material> listTagMaterialByPage(Long[] tagIds, Integer start, Integer limit) {
         Session sess = getSession();
@@ -110,6 +118,15 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
         return new ArrayList<>(result);
     }
 
+    /**
+     * 根据标签id数组和素材类型, 分页得到素材列表
+     *
+     * @param tagIds 标签id数组
+     * @param type   素材类型
+     * @param start  起始行
+     * @param limit  一页多少行
+     * @return 素材列表
+     */
     @Override
     public List<Material> listTagMaterialByPage(Long[] tagIds, String type, Integer start, Integer limit) {
         Session sess = getSession();
@@ -123,6 +140,14 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
         return new ArrayList<>(result);
     }
 
+    /**
+     * 根据标签id, 分页得到素材列表
+     *
+     * @param tagId 标签id
+     * @param start 起始行
+     * @param limit 一页多少行
+     * @return 素材列表
+     */
     @Override
     public List<Material> listTagMaterialByPage(Long tagId, Integer start, Integer limit) {
         Session sess = getSession();
@@ -135,6 +160,15 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
         return new ArrayList<>(result);
     }
 
+    /**
+     * 根据标签id和素材类型, 分页得到素材列表
+     *
+     * @param tagId 标签id
+     * @param type  素材类型
+     * @param start 起始行
+     * @param limit 一页多少行
+     * @return 素材列表
+     */
     @Override
     public List<Material> listTagMaterialByPage(Long tagId, String type, Integer start, Integer limit) {
         Session sess = getSession();
@@ -178,6 +212,12 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .setProjection(Projections.count("id")).uniqueResult();
     }
 
+    /**
+     * 根据素材类别得到素材记录数
+     *
+     * @param materialType 素材类别
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(MaterialType materialType) {
         Session sess = getSession();
@@ -187,7 +227,7 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
     }
 
     /**
-     * 根据素材类别和徐才类型得到素材记录数
+     * 根据素材类别和素材类型得到素材记录数
      *
      * @param materialType 素材类别
      * @param type         素材类型
@@ -202,6 +242,13 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .setProjection(Projections.count("id")).uniqueResult();
     }
 
+    /**
+     * 根据标签id数组和素材类型得到素材记录数
+     *
+     * @param tagIds 标签id数组
+     * @param type   素材类型
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(Long[] tagIds, String type) {
         Session sess = getSession();
@@ -212,6 +259,12 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .setProjection(Projections.countDistinct("id")).uniqueResult();
     }
 
+    /**
+     * 根据标签id数组得到素材记录数
+     *
+     * @param tagIds 标签id数组
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(Long[] tagIds) {
         Session sess = getSession();
@@ -221,6 +274,13 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .setProjection(Projections.countDistinct("id")).uniqueResult();
     }
 
+    /**
+     * 根据标签id和素材类型得到素材记录数
+     *
+     * @param tagId 标签id
+     * @param type  素材类型
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(Long tagId, String type) {
         Session sess = getSession();
@@ -231,6 +291,12 @@ public class MaterialDaoHibernate extends GenericDaoHibernate<Material, Long> im
                 .setProjection(Projections.countDistinct("id")).uniqueResult();
     }
 
+    /**
+     * 根据标签id得到素材记录数
+     *
+     * @param tagId 标签id
+     * @return 素材记录数
+     */
     @Override
     public Long getMaterialCount(Long tagId) {
         Session sess = getSession();

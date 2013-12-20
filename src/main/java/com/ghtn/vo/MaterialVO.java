@@ -1,27 +1,28 @@
 package com.ghtn.vo;
 
 /**
+ * 素材vo
  * User: Administrator
  * Date: 13-11-28
  * Time: 上午10:26
  */
 public class MaterialVO {
-    private Long id;
-    private String title;
-    private String type;
-    private String text;
-    private String image;
-    private Long[] tagIds;
-    private String[] tagNames;
-    private String tagNameStr;
-    private Long materialTypeId;
-    private String materialTypeName;
-    private Long parentId;
-    private String parentTitle;
-    private Long[] childIds;
-    private String[] childTitle;
-    private String[] childPath;
-    private Integer childCount;
+    private Long id;    //主键
+    private String title;   //标题
+    private String type;    //素材类型, 文本或图片
+    private String text;    //文本素材的文本内容
+    private String image;   //图片素材的图片路径
+    private Long[] tagIds;  //标签id数组
+    private String[] tagNames;  //标签名称数组
+    private String tagNameStr;  //标签名称数组的字符串, ","分割
+    private Long materialTypeId;    //素材类别id
+    private String materialTypeName;    //素材类别名称
+    private Long parentId;  //父节点id
+    private String parentTitle; //父节点标题
+    private Long[] childIds;    //子节点id数组(只有文本素材才有子节点)
+    private String[] childTitle;    //子节点标题数组
+    private String[] childPath; //子节点的图片路径数组
+    private Integer childCount; //子节点的个数
 
     public Long getId() {
         return id;

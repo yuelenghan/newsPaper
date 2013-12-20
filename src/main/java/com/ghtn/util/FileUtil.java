@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * created by lh
- * 文件操作相关
+ * 文件操作工具类
  */
 public class FileUtil {
 
@@ -39,7 +39,7 @@ public class FileUtil {
      * 得到文件扩展名
      *
      * @param fileName 文件全名
-     * @return
+     * @return 文件扩展名
      */
     public static String getFileExtension(String fileName) {
         if (!StringUtil.isNullStr(fileName)) {
@@ -53,8 +53,8 @@ public class FileUtil {
     /**
      * 得到文件内容
      *
-     * @param path
-     * @return
+     * @param path 文件全路径
+     * @return 文件内容
      */
     public static String getFileContent(String path) {
         try {
@@ -69,7 +69,7 @@ public class FileUtil {
             }
             BufferedReader reader = new BufferedReader(new InputStreamReader(
                     new FileInputStream(path)));
-            String line = new String();
+            String line;
             StringBuffer temp = new StringBuffer();
 
             while ((line = reader.readLine()) != null) {
@@ -91,9 +91,9 @@ public class FileUtil {
     /**
      * 读取03版word文件的内容
      *
-     * @param fileName
-     * @return
-     * @throws Exception
+     * @param fileName 文件全路径
+     * @return 文件内容
+     * @throws Exception 抛出产生的所有异常信息
      */
     public static String Word_03_Reader(String fileName) throws Exception {
         StringBuffer temp = new StringBuffer();
@@ -115,9 +115,9 @@ public class FileUtil {
     /**
      * 读取07版word文件的内容
      *
-     * @param fileName
-     * @return
-     * @throws Exception
+     * @param fileName 文件全路径
+     * @return 文件内容
+     * @throws Exception 抛出产生的所有异常信息
      */
     public static String Word_07_Reader(String fileName) throws Exception {
         OPCPackage opcPackage = POIXMLDocument.openPackage(fileName);
@@ -131,8 +131,8 @@ public class FileUtil {
      *
      * @param fileName 文件全名
      * @param fileType 文件类型，2003或2007
-     * @return
-     * @throws Exception
+     * @return 文件内容
+     * @throws Exception 抛出产生的所有异常信息
      */
     public static String ExcelReader(String fileName, String fileType) throws Exception {
         StringBuffer temp = new StringBuffer();
@@ -218,10 +218,10 @@ public class FileUtil {
     /**
      * 循环sheet
      *
-     * @param list
-     * @param sheet
-     * @param startLine
-     * @param sdf
+     * @param list      把循环的结果装入这个list
+     * @param sheet     循环的sheet
+     * @param startLine 起始行
+     * @param sdf       把日期转换为字符串所用的格式
      */
     private static void loopExcelSheet(List<Object[]> list, Sheet sheet, int startLine, SimpleDateFormat sdf) {
         int line = 1; //当前行
@@ -288,28 +288,38 @@ public class FileUtil {
     /**
      * 向文件中写入内容
      *
-     * @param text
-     * @param path
+     * @param text 写入的内容
+     * @param path 文件全路径
      */
-    public static void writeToFile(String text, String path) {
+    public static void writeToFile(String text, String path) throws Exception {
         File file = new File(path);
-        try {
-            FileWriter fw = new FileWriter(path);
+        if (!file.exists()) {
+            log.error("文件不存在!!!");
+            throw new FileNotFoundException();
+        }
+        try (FileWriter fw = new FileWriter(path)) {
             fw.write(text);
             fw.flush();
-            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("文件写入错误！");
+            log.error("文件写入错误！");
         }
     }
 
-    public static void writeToFile(String text, File file) {
-        try {
-            FileWriter fw = new FileWriter(file);
+    /**
+     * 向文件中写入内容
+     *
+     * @param text 写入的内容
+     * @param file 文件全路径
+     */
+    public static void writeToFile(String text, File file) throws Exception {
+        if (!file.exists()) {
+            log.error("文件不存在!!!");
+            throw new FileNotFoundException();
+        }
+        try (FileWriter fw = new FileWriter(file)) {
             fw.write(text);
             fw.flush();
-            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("文件写入错误！");
@@ -319,8 +329,9 @@ public class FileUtil {
     /**
      * 得到路径path下的所有文件
      *
-     * @param path
-     * @return
+     * @param path     路径
+     * @param fileList 把符合条件的文件装入这个list
+     * @return 文件列表
      */
     public static List<File> getAllFiles(File path, List<File> fileList) throws Exception {
         if (path.isFile()) {
@@ -337,10 +348,10 @@ public class FileUtil {
     /**
      * 得到path路径下的所有文件夹
      *
-     * @param path
-     * @param fileList
-     * @return
-     * @throws Exception
+     * @param path     路径
+     * @param fileList 把符合条件的文件夹装入这个list
+     * @return 文件夹列表
+     * @throws Exception 抛出产生的所有异常信息
      */
     public static List<File> getAllDirectories(File path, List<File> fileList) throws Exception {
         File[] files = path.listFiles();
@@ -356,8 +367,8 @@ public class FileUtil {
     /**
      * 得到纯文本
      *
-     * @param text
-     * @return
+     * @param text 传入的字符串
+     * @return 去除掉特殊符号之后的字符串(纯文本)
      */
     public static String getPureText(String text) {
         return text.replaceAll("<([^>]*)>", "").replaceAll("\\s*|\t|\r|\n", "").replaceAll("&nbsp;", "");
@@ -375,7 +386,7 @@ public class FileUtil {
     }
 
     /**
-     * 删除文件
+     * 删除文件, 把list中的文件全部删除
      *
      * @param list 文件list
      */
@@ -393,8 +404,8 @@ public class FileUtil {
     /**
      * 删除文件夹
      *
-     * @param path
-     * @throws Exception
+     * @param path 文件夹路径
+     * @throws Exception 抛出产生的所有异常信息
      */
     public static void deleteDirectory(File path) {
         if (path.isFile()) {
@@ -413,7 +424,7 @@ public class FileUtil {
     /**
      * 清空文件夹
      *
-     * @param path
+     * @param path 文件夹路径
      */
     public static void clearDirectory(File path) {
         if (path.isFile()) {
@@ -432,7 +443,7 @@ public class FileUtil {
      * 根据文件名判断文件是否存在
      *
      * @param fileName 文件全名
-     * @return
+     * @return 存在:true, 不存在:false
      */
     public static boolean exists(String fileName) {
         File file = new File(fileName);
@@ -482,6 +493,7 @@ public class FileUtil {
      * @param fileName 文件名
      * @param response HttpServletResponse对象
      * @return 下载结果
+     * @throws UnsupportedEncodingException 不支持的字符集编码异常
      */
     public static String downloadFile(String fileName, HttpServletResponse response) throws UnsupportedEncodingException {
         // log.debug(ConstantUtil.CONTACTS_TEMPLATE_PATH);
@@ -515,7 +527,7 @@ public class FileUtil {
      *
      * @param srcFileName  待复制的文件名
      * @param destFileName 目标文件名
-     * @param overlay      如果目标文件存在，是否覆盖
+     * @param overlay      如果目标文件存在，是否覆盖, 覆盖:true, 不覆盖:false
      * @return 如果复制成功，则返回true，否则返回false
      */
     public static boolean copyFile(String srcFileName, String destFileName,

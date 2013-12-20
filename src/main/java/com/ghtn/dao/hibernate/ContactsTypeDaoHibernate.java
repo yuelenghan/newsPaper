@@ -24,6 +24,12 @@ public class ContactsTypeDaoHibernate extends GenericDaoHibernate<ContactsType, 
         super(ContactsType.class);
     }
 
+    /**
+     * 得到此通讯录类别下的所有叶子节点
+     *
+     * @param contactsType 通讯录类别
+     * @return 所有叶子节点
+     */
     @Override
     public List<ContactsType> getLeaves(ContactsType contactsType) {
         Session sess = getSession();

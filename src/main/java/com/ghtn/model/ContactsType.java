@@ -1,19 +1,16 @@
 package com.ghtn.model;
 
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
-import org.hibernate.type.YesNoType;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
 /**
+ * 通讯录类别实体类
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-11-6
@@ -24,17 +21,18 @@ import java.util.Set;
 @Table(name = "t_contacts_type")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class ContactsType implements Serializable {
-    private Long id;
-    private Tenant tenant;
-    private String name;
-    private ContactsType parent;
-    private Boolean root;
-    private Boolean leaf;
-    private String pathId;
-    private String pathName;
+    private Long id; //主键
+    private Tenant tenant; //租户
+    private String name; //类别名称
+    private ContactsType parent; //父节点
+    private Boolean root; //是否根节点, 是:true, 否:false
+    private Boolean leaf; //是否叶子节点, 是:true, 否:false
+    private String pathId; //树形结构的id路径
+    private String pathName; //树形结构的名称路径
 
-    private List<ContactsType> children;
-    private Set<Contacts> contactsSet;
+    //关系映射
+    private List<ContactsType> children; //子节点
+    private Set<Contacts> contactsSet; //通讯录集合
 
     @Id
     @GeneratedValue

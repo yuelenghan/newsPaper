@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 通讯录service接口
  * User: Administrator
  * Date: 13-11-7
  * Time: 上午9:31
@@ -61,5 +62,11 @@ public interface ContactsManager extends GenericManager<Contacts, Long> {
      */
     Long getContactsCount(ContactsType contactsType);
 
+    /**
+     * 更新通讯录人员信息
+     *
+     * @param contacts 通讯录人员信息
+     * @return 更新之后的通讯录人员信息
+     */
     Contacts updateContacts(Contacts contacts);
 }

@@ -3,6 +3,7 @@ package com.ghtn.service.impl;
 import com.ghtn.dao.MaterialTypeDao;
 import com.ghtn.model.Material;
 import com.ghtn.model.MaterialType;
+import com.ghtn.model.Tenant;
 import com.ghtn.service.MaterialManager;
 import com.ghtn.service.MaterialTypeManager;
 import com.ghtn.vo.MaterialTypeVO;
@@ -38,7 +39,7 @@ public class MaterialTypeManagerImpl extends GenericManagerImpl<MaterialType, Lo
     }
 
     @Override
-    public List<MaterialTypeVO> listMaterialType() {
+    public List<MaterialTypeVO> listMaterialType(Tenant tenant) {
         List<MaterialType> list = getAll();
         if (list != null && list.size() > 0) {
             List<MaterialTypeVO> returnList = new ArrayList<>();

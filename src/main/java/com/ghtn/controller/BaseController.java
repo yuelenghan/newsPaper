@@ -9,15 +9,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 处理异常信息
+ * 处理异常信息和返回处理成功的信息
  * User: Administrator
  * Date: 13-11-28
  * Time: 上午8:58
+ *
+ * @author lh
  */
 public class BaseController {
 
     private static Log log = LogFactory.getLog(BaseController.class);
 
+    /**
+     * 异常信息处理的方法
+     *
+     * @param e 异常
+     * @return 处理结果,{success:false, msg:错误信息, caused by:引起错误的原因}
+     */
     @ExceptionHandler
     @ResponseBody
     public Map<String, Object> handleException(Exception e) {
@@ -32,6 +40,11 @@ public class BaseController {
         return returnMap;
     }
 
+    /**
+     * 返回处理成功的结果
+     *
+     * @return 操作结果,{success:true, msg:成功信息}
+     */
     public Map<String, Object> operationSuccess() {
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("success", true);

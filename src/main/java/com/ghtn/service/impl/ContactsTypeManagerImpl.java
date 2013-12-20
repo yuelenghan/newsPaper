@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 通讯录类别service
  * User: Administrator
  * Date: 13-11-7
  * Time: 上午9:40
@@ -24,6 +25,9 @@ import java.util.Map;
 public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Long>
         implements ContactsTypeManager {
 
+    /**
+     * 通讯录类别dao, 由spring注入
+     */
     private ContactsTypeDao contactsTypeDao;
 
     private static Log log = LogFactory.getLog(ContactsTypeManagerImpl.class);
@@ -34,10 +38,16 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         this.contactsTypeDao = contactsTypeDao;
     }
 
+    /**
+     * 得到此租户下的通讯录类别的树形结构
+     *
+     * @param tenant 租户
+     * @return 通讯录类别树形结构
+     */
     @Override
     public ContactsTypeVO getContactsTypeTree(Tenant tenant) {
         //TODO: 根据租户得到此租户下的通讯录根节点
-        ContactsType root = null;
+        ContactsType root;
         root = get(1L);
 
         ContactsTypeVO contactsTypeVO = new ContactsTypeVO();
@@ -47,7 +57,14 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
 
     }
 
-    public ContactsTypeVO getTree(ContactsType contactsType, ContactsTypeVO contactsTypeVO) {
+    /**
+     * 根据传入的节点, 得到此节点下的树形结构, 包括此节点(递归调用)
+     *
+     * @param contactsType   传入的节点
+     * @param contactsTypeVO 存放树形结构
+     * @return 树形结构
+     */
+    private ContactsTypeVO getTree(ContactsType contactsType, ContactsTypeVO contactsTypeVO) {
 
         contactsTypeVO.setId(contactsType.getId());
         contactsTypeVO.setText(contactsType.getName());
@@ -67,6 +84,12 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         }
     }
 
+    /**
+     * 增加子节点
+     *
+     * @param contactsTypeVO 父节点主键:id, 增加的子节点名称:text
+     * @return 操作结果, {success:true(or false), msg:操作信息}
+     */
     @Override
     public Map<String, Object> addChild(ContactsTypeVO contactsTypeVO) {
         ContactsType parent;
@@ -109,6 +132,12 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         return returnMap;
     }
 
+    /**
+     * 得到此通讯录类别下的所有叶子节点
+     *
+     * @param contactsType 通讯录类别
+     * @return 所有叶子节点
+     */
     @Override
     public List<ContactsType> getLeaves(ContactsType contactsType) {
         List<ContactsType> list = new ArrayList<>();
@@ -132,6 +161,12 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         return contactsTypeDao.getRoot(tenant);
     }
 
+    /**
+     * 更新通讯录类别
+     *
+     * @param contactsType 需要更新的记录的主键:id, 更新之后的名称:name
+     * @return 更新之后的实体
+     */
     @Override
     public ContactsType updateContactsType(ContactsType contactsType) {
         ContactsType old = get(contactsType.getId());
@@ -139,7 +174,12 @@ public class ContactsTypeManagerImpl extends GenericManagerImpl<ContactsType, Lo
         return save(old);
     }
 
-
+    /**
+     * 删除通讯录类别
+     *
+     * @param contactsType 需要删除的记录的主键:id
+     * @throws Exception 抛出所有产生的异常
+     */
     @Override
     public void removeContactsType(ContactsType contactsType) throws Exception {
         contactsType = get(contactsType.getId());

@@ -7,11 +7,18 @@ import org.aspectj.lang.ProceedingJoinPoint;
 /**
  * 用于观察方法的执行效率
  *
- * @author yuelenghan
+ * @author lh
  */
 public class MethodEfficiencyUtil {
     private static Log log = LogFactory.getLog(LogUtil.class);
 
+    /**
+     * 包裹方法
+     *
+     * @param joinPoint 织入点
+     * @return 方法执行的返回值
+     * @throws Throwable 抛出所有异常
+     */
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
 

@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 素材类别实体类
  * Created with IntelliJ IDEA.
  * User: Administrator
  * Date: 13-11-6
@@ -14,11 +15,12 @@ import java.util.List;
 @Entity
 @Table(name = "t_material_type")
 public class MaterialType implements Serializable {
-    private Long id;
-    private String name;
-    private Tenant tenant;
+    private Long id;    //主键
+    private String name;    //类别名称
+    private Tenant tenant;  //租户
 
-    private List<Material> materialList;
+    //关系映射
+    private List<Material> materialList; //素材集合
 
     @Id
     @GeneratedValue
